@@ -1,0 +1,2285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Partner Hub">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#006570">
+<title>Partners Mortgage — Partner Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --t:#00818D;--td:#006570;--tl:#e6f4f5;--tm:#00a0af;
+  --wg:#8A7E78;--wgl:#f5f3f2;--y:#FFAC27;--yl:#FFF3DC;
+  --w:#ffffff;--dk:#2a2625;--mid:#5a5350;--br:#e2dedd;
+  --bg:#f4f2f1;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--dk);min-height:100vh;}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--td);height:44px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 32px;position:fixed;top:0;left:0;right:0;z-index:200;}
+.tb-left{display:flex;align-items:center;gap:20px;}
+.tb-greet{color:rgba(255,255,255,.75);font-size:13px;}
+.tb-greet strong{color:var(--y);font-weight:600;}
+.tb-search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;width:220px;}
+.tb-search input{background:none;border:none;outline:none;color:#fff;font-size:13px;
+  font-family:'Barlow',sans-serif;width:100%;}
+.tb-search input::placeholder{color:rgba(255,255,255,.5);}
+.tb-right{display:flex;align-items:center;gap:14px;}
+.tb-date{color:rgba(255,255,255,.5);font-size:12px;}
+.tb-gear{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.6);
+  font-size:18px;padding:4px;transition:color .2s;}
+.tb-gear:hover{color:var(--y);}
+.tb-avatar{width:28px;height:28px;border-radius:50%;background:var(--y);display:flex;
+  align-items:center;justify-content:center;font-size:12px;font-weight:700;
+  color:var(--td);cursor:pointer;}
+
+/* ── SIDEBAR ── */
+.sidebar{position:fixed;top:44px;left:0;bottom:0;width:240px;background:#fff;
+  border-right:1px solid var(--br);display:flex;flex-direction:column;z-index:150;overflow-y:auto;}
+.sb-logo{padding:22px 22px 18px;border-bottom:1px solid var(--br);
+  display:flex;align-items:center;gap:10px;cursor:pointer;}
+.sb-logo img{width:34px;height:34px;object-fit:contain;}
+.sb-brand-name{font-family:'Barlow',sans-serif;font-weight:800;font-size:14px;
+  color:var(--t);letter-spacing:.04em;text-transform:uppercase;line-height:1.2;}
+.sb-brand-sub{font-size:10px;color:var(--wg);letter-spacing:.06em;
+  text-transform:uppercase;font-weight:500;}
+.sb-sec{padding:14px 0 6px;}
+.sb-sec-lbl{padding:0 20px 5px;font-size:10px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--wg);}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;
+  text-decoration:none;color:var(--mid);font-size:13.5px;font-weight:500;
+  border-left:3px solid transparent;transition:all .15s;}
+.sb-item:hover{background:var(--tl);color:var(--t);border-left-color:var(--t);}
+.sb-item.active{background:var(--tl);color:var(--t);border-left-color:var(--t);font-weight:600;}
+.sb-item .ico{width:17px;height:17px;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;opacity:.7;}
+.sb-item.active .ico{opacity:1;}
+.sb-badge{margin-left:auto;background:var(--y);color:var(--td);font-size:10px;
+  font-weight:700;padding:2px 7px;border-radius:10px;}
+.sb-footer{margin-top:auto;padding:14px 20px;border-top:1px solid var(--br);}
+.sb-tagline{font-size:11px;color:var(--wg);font-style:italic;font-family:'Lora',serif;}
+
+/* ── MAIN ── */
+.main{margin-left:240px;margin-top:44px;}
+.section{display:none;}
+.section.active{display:block;}
+
+/* ── SHARED COMPONENTS ── */
+.page-hero{background:linear-gradient(135deg,var(--td) 0%,var(--t) 55%,var(--tm) 100%);
+  padding:44px 48px 0;position:relative;overflow:hidden;}
+.page-hero::before{content:'';position:absolute;top:-80px;right:-80px;
+  width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.04);}
+.ph-inner{display:flex;align-items:flex-end;justify-content:space-between;
+  position:relative;z-index:1;}
+.ph-text{max-width:560px;padding-bottom:36px;}
+.ph-eyebrow{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  border-radius:20px;padding:5px 14px;margin-bottom:14px;font-size:11px;
+  font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--y);}
+.ph-text h1{font-family:'Lora',serif;font-size:34px;font-weight:700;
+  color:#fff;line-height:1.2;margin-bottom:12px;}
+.ph-text p{color:rgba(255,255,255,.75);font-size:14.5px;line-height:1.6;}
+.ph-owner{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  border-radius:10px;padding:14px 18px;margin-bottom:36px;
+  display:flex;align-items:center;gap:12px;min-width:240px;}
+.ph-owner-av{width:40px;height:40px;border-radius:50%;background:var(--y);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;color:var(--td);flex-shrink:0;}
+.ph-owner-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;
+  color:rgba(255,255,255,.5);margin-bottom:2px;}
+.ph-owner-name{font-size:13px;font-weight:700;color:#fff;}
+.ph-owner-role{font-size:11px;color:rgba(255,255,255,.6);}
+.ph-tabs{display:flex;position:relative;z-index:2;}
+.ph-tab{padding:13px 22px;font-size:13px;font-weight:600;color:rgba(255,255,255,.6);
+  cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;}
+.ph-tab:hover{color:#fff;}
+.ph-tab.active{color:#fff;border-bottom-color:var(--y);background:rgba(255,255,255,.06);}
+
+.content{padding:32px 48px 48px;}
+
+/* ── CARDS ── */
+.card{background:#fff;border-radius:12px;border:1px solid var(--br);overflow:hidden;}
+.card-hd{padding:16px 20px;border-bottom:1px solid var(--br);
+  display:flex;align-items:center;justify-content:space-between;}
+.card-hd-title{font-weight:700;font-size:14px;color:var(--dk);}
+.card-hd-link{font-size:12px;color:var(--t);font-weight:600;cursor:pointer;text-decoration:none;}
+.card-hd-link:hover{text-decoration:underline;}
+.card-body{padding:16px 20px;}
+
+/* ── GRID UTILS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+
+/* ── STAT CARDS ── */
+.stat-card{background:#fff;border-radius:12px;border:1px solid var(--br);
+  padding:18px 20px;position:relative;overflow:hidden;}
+.stat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.stat-card.c-t::after{background:var(--t);}
+.stat-card.c-y::after{background:var(--y);}
+.stat-card.c-g::after{background:var(--wg);}
+.stat-card.c-m::after{background:var(--tm);}
+.stat-lbl{font-size:11px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--wg);margin-bottom:8px;}
+.stat-val{font-size:28px;font-weight:800;color:var(--dk);line-height:1;margin-bottom:4px;}
+.stat-sub{font-size:12px;color:var(--wg);}
+
+/* ── CALLOUT ── */
+.callout-y{background:var(--y);border-radius:12px;padding:14px 20px;
+  display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.callout-y .ci{font-size:20px;flex-shrink:0;}
+.callout-y .ct{font-size:13px;font-weight:600;color:var(--td);}
+.callout-y .ct span{font-weight:400;color:rgba(0,64,72,.8);}
+
+/* ── SECTION HEADER ── */
+.sec-hdr{display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:16px;}
+.sec-hdr h2{font-family:'Lora',serif;font-size:20px;font-weight:700;color:var(--dk);}
+.sec-hdr a{font-size:12px;color:var(--t);font-weight:600;text-decoration:none;}
+
+/* ── DIVIDER ── */
+.divider{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.divider-line{flex:1;height:1px;background:var(--br);}
+.divider-lbl{font-size:10px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--wg);white-space:nowrap;}
+
+/* ── NAV TILES (home) ── */
+.nav-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.nav-tile{background:#fff;border:1px solid var(--br);border-radius:12px;
+  padding:18px 16px;cursor:pointer;text-decoration:none;display:flex;
+  flex-direction:column;gap:9px;transition:all .2s;position:relative;overflow:hidden;}
+.nav-tile::before{content:'';position:absolute;bottom:0;left:0;right:0;
+  height:3px;background:var(--t);transform:scaleX(0);transition:transform .2s;}
+.nav-tile:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,129,141,.12);
+  border-color:var(--t);}
+.nav-tile:hover::before{transform:scaleX(1);}
+.nt-icon{width:38px;height:38px;border-radius:9px;background:var(--tl);
+  display:flex;align-items:center;justify-content:center;color:var(--t);}
+.nt-name{font-weight:700;font-size:13px;color:var(--dk);}
+.nt-desc{font-size:11.5px;color:var(--wg);line-height:1.4;}
+
+/* ── HOME: announcements ── */
+.ann-item{padding:11px 0;border-bottom:1px solid var(--br);
+  display:flex;gap:11px;align-items:flex-start;}
+.ann-item:last-child{border-bottom:none;}
+.ann-dot{width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.ann-dot.t{background:var(--t);}
+.ann-dot.y{background:var(--y);}
+.ann-dot.g{background:var(--wg);}
+.ann-content h4{font-size:13.5px;font-weight:600;color:var(--dk);margin-bottom:3px;}
+.ann-content p{font-size:12px;color:var(--mid);line-height:1.4;}
+.ann-date{font-size:11px;color:var(--wg);margin-top:3px;}
+
+/* ── HOME: quick links ── */
+.ql-item{display:flex;align-items:center;gap:10px;padding:9px 0;
+  border-bottom:1px solid var(--br);cursor:pointer;text-decoration:none;
+  color:var(--dk);font-size:13px;font-weight:500;transition:color .15s;}
+.ql-item:last-child{border-bottom:none;}
+.ql-item:hover{color:var(--t);}
+.ql-ico{width:30px;height:30px;border-radius:7px;background:var(--tl);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--t);flex-shrink:0;font-size:13px;}
+.ql-arr{margin-left:auto;color:var(--wg);font-size:12px;}
+
+/* ── HOME: celebrations ── */
+.celeb-item{display:flex;align-items:center;gap:11px;padding:9px 0;
+  border-bottom:1px solid var(--br);}
+.celeb-item:last-child{border-bottom:none;}
+.celeb-av{width:36px;height:36px;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-weight:700;
+  font-size:13px;flex-shrink:0;}
+.celeb-text h4{font-size:13px;font-weight:600;color:var(--dk);}
+.celeb-text p{font-size:11.5px;color:var(--mid);}
+.celeb-badge{margin-left:auto;flex-shrink:0;font-size:17px;}
+
+/* ── SALES PULSE WIDGET (home) ── */
+.pulse-card{background:var(--td);border-radius:14px;padding:22px 26px;
+  margin-bottom:24px;color:#fff;position:relative;overflow:hidden;cursor:pointer;}
+.pulse-card::before{content:'';position:absolute;right:-40px;top:-40px;
+  width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);}
+.pulse-card::after{content:'';position:absolute;right:80px;bottom:-60px;
+  width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.03);}
+.pulse-top{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:18px;position:relative;z-index:1;}
+.pulse-title{font-size:12px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(255,255,255,.6);}
+.pulse-updated{font-size:11px;color:rgba(255,255,255,.4);}
+.pulse-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+  position:relative;z-index:1;}
+.pulse-metric{border-left:2px solid rgba(255,255,255,.15);padding-left:14px;}
+.pulse-metric:first-child{border-left:none;padding-left:0;}
+.pulse-m-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;
+  color:rgba(255,255,255,.5);margin-bottom:5px;}
+.pulse-m-val{font-size:24px;font-weight:800;line-height:1;}
+.pulse-m-val.accent{color:var(--y);}
+.pulse-m-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:3px;}
+.pulse-cta{position:absolute;right:26px;bottom:22px;z-index:1;
+  font-size:12px;font-weight:600;color:var(--y);text-decoration:none;}
+
+/* ── SALES: resource tiles ── */
+.res-tile{background:#fff;border-radius:12px;border:1px solid var(--br);
+  padding:20px;cursor:pointer;text-decoration:none;transition:all .2s;
+  display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;}
+.res-tile::after{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:var(--t);transform:scaleX(0);transition:transform .2s;}
+.res-tile:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,129,141,.12);
+  border-color:var(--t);}
+.res-tile:hover::after{transform:scaleX(1);}
+.res-icon{width:44px;height:44px;border-radius:10px;background:var(--tl);
+  display:flex;align-items:center;justify-content:center;font-size:22px;}
+.res-name{font-weight:700;font-size:14px;color:var(--dk);}
+.res-desc{font-size:12px;color:var(--mid);line-height:1.4;}
+.res-badge{align-self:flex-start;padding:3px 9px;border-radius:20px;
+  font-size:10px;font-weight:700;}
+.res-badge.new{background:var(--yl);color:#9a6000;}
+.res-badge.key{background:var(--tl);color:var(--td);}
+
+/* ── DASHBOARD: metric cards ── */
+.dash-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  margin-bottom:24px;}
+.dm-card{background:#fff;border-radius:12px;border:1px solid var(--br);
+  padding:18px 20px;position:relative;overflow:hidden;}
+.dm-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.dm-card.c1::after{background:var(--t);}
+.dm-card.c2::after{background:var(--y);}
+.dm-card.c3::after{background:var(--tm);}
+.dm-card.c4::after{background:var(--wg);}
+.dm-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--wg);margin-bottom:8px;}
+.dm-val{font-size:26px;font-weight:800;color:var(--dk);line-height:1;margin-bottom:4px;}
+.dm-sub{font-size:11.5px;color:var(--wg);}
+
+/* ── DASHBOARD: period toggle ── */
+.period-toggle{display:flex;gap:4px;margin-bottom:20px;flex-wrap:wrap;}
+.pt-btn{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;
+  cursor:pointer;border:1px solid var(--br);background:#fff;color:var(--mid);
+  font-family:'Barlow',sans-serif;transition:all .15s;}
+.pt-btn:hover{border-color:var(--t);color:var(--t);}
+.pt-btn.active{background:var(--t);border-color:var(--t);color:#fff;}
+
+/* ── DASHBOARD: leaderboards ── */
+.lb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:28px;}
+.lb-card{background:#fff;border-radius:12px;border:1px solid var(--br);}
+.lb-hdr{padding:14px 18px;border-bottom:1px solid var(--br);
+  display:flex;align-items:center;gap:8px;}
+.lb-hdr-title{font-size:13px;font-weight:700;color:var(--dk);}
+.lb-hdr-badge{background:var(--tl);color:var(--t);font-size:10px;
+  font-weight:700;padding:2px 8px;border-radius:10px;margin-left:auto;}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 18px;
+  border-bottom:1px solid var(--br);}
+.lb-row:last-child{border-bottom:none;}
+.lb-rank{width:22px;height:22px;border-radius:50%;background:var(--tl);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--t);flex-shrink:0;}
+.lb-rank.gold{background:var(--y);color:var(--td);}
+.lb-name{font-size:13px;font-weight:600;color:var(--dk);flex:1;}
+.lb-bar-wrap{flex:2;height:8px;background:var(--tl);border-radius:4px;overflow:hidden;}
+.lb-bar{height:100%;background:var(--t);border-radius:4px;transition:width .5s;}
+.lb-row:first-child .lb-bar{background:var(--y);}
+.lb-val{font-size:12px;font-weight:700;color:var(--wg);min-width:36px;text-align:right;}
+
+/* ── LO PERFORMANCE ── */
+.lo-table{width:100%;border-collapse:collapse;font-size:13px;}
+.lo-table th{text-align:left;padding:10px 14px;font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--wg);
+  border-bottom:2px solid var(--br);background:var(--bg);}
+.lo-table td{padding:11px 14px;border-bottom:1px solid var(--br);color:var(--dk);}
+.lo-table tbody tr:last-child td{border-bottom:none;}
+.lo-table tbody tr:hover td{background:var(--tl);}
+.lo-vol-bar{height:6px;background:var(--t);border-radius:3px;min-width:4px;}
+
+/* ── LEADERSHIP VIEW ── */
+.ls-pin-wrap{display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:60px 20px;text-align:center;}
+.ls-pin-wrap h3{font-family:'Lora',serif;font-size:22px;font-weight:700;
+  color:var(--dk);margin-bottom:8px;}
+.ls-pin-wrap p{color:var(--mid);font-size:14px;margin-bottom:24px;}
+.pin-input-row{display:flex;gap:10px;}
+.pin-input{width:200px;padding:10px 16px;border:2px solid var(--br);
+  border-radius:8px;font-size:16px;font-family:'Barlow',sans-serif;
+  letter-spacing:.3em;text-align:center;outline:none;transition:border .2s;}
+.pin-input:focus{border-color:var(--t);}
+.btn-primary{padding:10px 24px;background:var(--t);border:none;border-radius:8px;
+  color:#fff;font-weight:700;font-size:13px;cursor:pointer;
+  font-family:'Barlow',sans-serif;transition:background .2s;}
+.btn-primary:hover{background:var(--td);}
+.pin-err{color:#c0392b;font-size:12px;margin-top:8px;}
+
+.ls-month-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;}
+.ls-month-btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;
+  cursor:pointer;border:2px solid var(--br);background:#fff;color:var(--mid);
+  font-family:'Barlow',sans-serif;transition:all .15s;}
+.ls-month-btn:hover{border-color:var(--t);color:var(--t);}
+.ls-month-btn.active{background:var(--t);border-color:var(--t);color:#fff;}
+.ls-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.ls-met{background:#fff;border-radius:12px;border:1px solid var(--br);padding:18px 20px;}
+.ls-met-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--wg);margin-bottom:8px;}
+.ls-met-val{font-size:26px;font-weight:800;color:var(--dk);}
+.ls-met-sub{font-size:12px;color:var(--wg);margin-top:4px;}
+
+/* ── UPLOAD CENTER ── */
+.uc-wrap{display:none;}
+.uc-wrap.visible{display:block;}
+.uc-section{background:#fff;border-radius:14px;border:1px solid var(--br);
+  padding:24px;margin-bottom:20px;}
+.uc-section h3{font-size:15px;font-weight:700;color:var(--dk);margin-bottom:4px;}
+.uc-section .uc-sub{font-size:12px;color:var(--wg);margin-bottom:18px;}
+.uc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.uc-field{display:flex;flex-direction:column;gap:5px;}
+.uc-field label{font-size:11px;font-weight:700;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--wg);}
+.uc-field input,.uc-field select{padding:9px 12px;border:1px solid var(--br);
+  border-radius:8px;font-size:13px;font-family:'Barlow',sans-serif;outline:none;
+  transition:border .2s;color:var(--dk);}
+.uc-field input:focus,.uc-field select:focus{border-color:var(--t);}
+.uc-upload-slots{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.uc-slot{border:2px dashed var(--br);border-radius:10px;padding:18px;
+  text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+.uc-slot:hover{border-color:var(--t);background:var(--tl);}
+.uc-slot input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.uc-slot-title{font-size:12px;font-weight:700;color:var(--dk);margin-bottom:4px;}
+.uc-slot-hint{font-size:11px;color:var(--wg);}
+.uc-slot.loaded{border-color:var(--t);background:var(--tl);}
+.uc-extracted{background:var(--bg);border-radius:8px;padding:12px;
+  margin-top:10px;font-size:12px;color:var(--mid);}
+.uc-checkbox-row{display:flex;align-items:center;gap:10px;
+  padding:12px 16px;background:var(--yl);border-radius:8px;margin-top:8px;}
+.uc-checkbox-row input{width:16px;height:16px;accent-color:var(--y);cursor:pointer;}
+.uc-checkbox-row label{font-size:13px;font-weight:600;color:var(--td);cursor:pointer;}
+.uc-save-btn{display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:14px;background:var(--t);border:none;border-radius:10px;
+  color:#fff;font-size:15px;font-weight:700;cursor:pointer;
+  font-family:'Barlow',sans-serif;margin-top:4px;transition:background .2s;}
+.uc-save-btn:hover{background:var(--td);}
+.uc-lo-table{width:100%;border-collapse:collapse;font-size:13px;}
+.uc-lo-table th{padding:8px 12px;font-size:10px;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--wg);
+  border-bottom:2px solid var(--br);background:var(--bg);}
+.uc-lo-table td{padding:8px 12px;border-bottom:1px solid var(--br);}
+.uc-lo-table td input{width:100%;padding:5px 8px;border:1px solid var(--br);
+  border-radius:6px;font-size:12px;font-family:'Barlow',sans-serif;}
+.uc-lo-table td input:focus{outline:none;border-color:var(--t);}
+.add-row-btn{padding:7px 14px;background:var(--tl);color:var(--t);
+  border:1px solid var(--br);border-radius:7px;font-size:12px;font-weight:600;
+  cursor:pointer;font-family:'Barlow',sans-serif;margin-top:8px;}
+.add-row-btn:hover{background:var(--t);color:#fff;}
+
+/* ── STUB SECTIONS ── */
+.stub-wrap{padding:48px;}
+.stub-hero{background:linear-gradient(135deg,var(--td),var(--t));
+  border-radius:16px;padding:40px;margin-bottom:28px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;overflow:hidden;}
+.stub-hero::after{content:'';position:absolute;right:-60px;top:-60px;
+  width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.05);}
+.stub-title{font-family:'Lora',serif;font-size:28px;font-weight:700;color:#fff;}
+.stub-sub{font-size:14px;color:rgba(255,255,255,.7);margin-top:8px;max-width:440px;}
+.stub-coming{font-family:'Lora',serif;font-style:italic;
+  color:var(--y);font-size:22px;font-weight:600;}
+.stub-pages{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.stub-page{background:#fff;border-radius:12px;border:1px solid var(--br);
+  padding:20px;cursor:pointer;transition:all .2s;}
+.stub-page:hover{transform:translateY(-2px);border-color:var(--t);
+  box-shadow:0 6px 20px rgba(0,129,141,.1);}
+.stub-page-icon{font-size:22px;margin-bottom:10px;}
+.stub-page-name{font-weight:700;font-size:13.5px;color:var(--dk);margin-bottom:5px;}
+.stub-page-desc{font-size:12px;color:var(--mid);}
+.wip-badge{display:inline-block;padding:2px 8px;border-radius:4px;
+  background:var(--yl);color:#9a6000;font-size:10px;font-weight:700;margin-top:6px;}
+
+/* ── ONBOARDING (ported) ── */
+.ob-role-sel{display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap;}
+.ob-role-lbl{font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--wg);}
+.ob-role-btn{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;
+  cursor:pointer;border:2px solid var(--br);background:#fff;color:var(--mid);
+  font-family:'Barlow',sans-serif;transition:all .18s;}
+.ob-role-btn:hover{border-color:var(--t);color:var(--t);}
+.ob-role-btn.active{background:var(--t);border-color:var(--t);color:#fff;}
+.progress-banner{background:#fff;border-radius:14px;border:1px solid var(--br);
+  padding:20px 24px;margin-bottom:22px;display:flex;align-items:center;gap:22px;}
+.prog-left{flex:1;}
+.prog-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;}
+.prog-title{font-size:14px;font-weight:700;color:var(--dk);}
+.prog-pct{font-size:22px;font-weight:800;color:var(--t);}
+.prog-track{height:10px;background:var(--tl);border-radius:10px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:10px;
+  background:linear-gradient(90deg,var(--t),var(--tm));transition:width 1s;}
+.prog-sub{font-size:12px;color:var(--wg);margin-top:7px;}
+.prog-right{display:flex;gap:14px;}
+.prog-stat{text-align:center;}
+.prog-stat-num{font-size:20px;font-weight:800;color:var(--dk);line-height:1;}
+.prog-stat-num.y{color:var(--y);}
+.prog-stat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--wg);margin-top:2px;}
+.prog-div{width:1px;background:var(--br);align-self:stretch;}
+.cl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px;}
+.cl-col{background:#fff;border-radius:13px;border:1px solid var(--br);overflow:hidden;}
+.cl-col-hdr{padding:15px 18px;display:flex;align-items:center;gap:9px;}
+.cl-col-hdr.w1{background:var(--t);}
+.cl-col-hdr.w2{background:var(--td);}
+.cl-col-hdr.w3{background:var(--wg);}
+.cl-col-hdr-ico{width:34px;height:34px;border-radius:7px;
+  background:rgba(255,255,255,.18);display:flex;align-items:center;
+  justify-content:center;font-size:17px;flex-shrink:0;}
+.cl-col-hdr h3{font-size:13.5px;font-weight:700;color:#fff;}
+.cl-col-hdr p{font-size:11px;color:rgba(255,255,255,.65);margin-top:1px;}
+.cl-body{padding:6px 0;}
+.cl-item{display:flex;align-items:flex-start;gap:11px;padding:9px 18px;
+  cursor:pointer;transition:background .15s;border-bottom:1px solid var(--br);}
+.cl-item:last-child{border-bottom:none;}
+.cl-item:hover{background:var(--bg);}
+.cl-box{width:17px;height:17px;border-radius:4px;border:2px solid var(--br);
+  flex-shrink:0;margin-top:1px;display:flex;align-items:center;
+  justify-content:center;transition:all .15s;}
+.cl-item.done .cl-box{background:var(--t);border-color:var(--t);}
+.cl-item.done .cl-box::after{content:'';width:4px;height:8px;
+  border:2px solid #fff;border-top:none;border-left:none;
+  transform:rotate(45deg) translateY(-1px);display:block;}
+.cl-item.done .cl-text{text-decoration:line-through;color:var(--wg);}
+.cl-text{font-size:13px;font-weight:500;color:var(--dk);line-height:1.35;}
+.cl-sub{font-size:11px;color:var(--mid);margin-top:2px;}
+.cl-tag{margin-left:auto;padding:2px 7px;border-radius:4px;
+  font-size:10px;font-weight:600;flex-shrink:0;}
+.cl-tag.req{background:#fff0f0;color:#c0392b;}
+.cl-tag.hr{background:var(--tl);color:var(--t);}
+.cl-tag.it{background:#f0f4ff;color:#3b5bdb;}
+.cl-tag.mgr{background:var(--yl);color:#9a6000;}
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px;}
+.plan-card{border-radius:13px;overflow:hidden;border:1px solid var(--br);}
+.plan-top{padding:22px 20px 18px;}
+.plan-top.d30{background:var(--t);}
+.plan-top.d60{background:var(--td);}
+.plan-top.d90{background:var(--wg);}
+.plan-badge{display:inline-block;background:rgba(255,255,255,.2);
+  border-radius:5px;padding:3px 9px;font-size:10px;font-weight:700;
+  color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+.plan-top h3{font-family:'Lora',serif;font-size:19px;font-weight:700;
+  color:#fff;margin-bottom:5px;}
+.plan-top p{font-size:12px;color:rgba(255,255,255,.7);line-height:1.5;}
+.plan-body{background:#fff;padding:14px 20px;}
+.plan-item{display:flex;align-items:flex-start;gap:9px;padding:8px 0;
+  border-bottom:1px solid var(--br);}
+.plan-item:last-child{border-bottom:none;}
+.plan-dot{width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.plan-dot.t{background:var(--t);}
+.plan-dot.y{background:var(--y);}
+.plan-dot.g{background:var(--wg);}
+.plan-item-text{font-size:12.5px;color:var(--dk);line-height:1.4;}
+.plan-item-sub{font-size:11px;color:var(--mid);margin-top:1px;}
+.sys-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;}
+.sys-card{background:#fff;border-radius:12px;border:1px solid var(--br);
+  padding:18px;cursor:pointer;text-decoration:none;transition:all .2s;
+  position:relative;overflow:hidden;}
+.sys-card::after{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:var(--t);transform:scaleX(0);transition:transform .2s;}
+.sys-card:hover{transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(0,129,141,.12);border-color:var(--t);}
+.sys-card:hover::after{transform:scaleX(1);}
+.sys-icon{width:42px;height:42px;border-radius:10px;background:var(--tl);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin-bottom:11px;}
+.sys-name{font-size:13.5px;font-weight:700;color:var(--dk);margin-bottom:4px;}
+.sys-desc{font-size:11.5px;color:var(--mid);line-height:1.4;margin-bottom:9px;}
+.sys-status{display:inline-flex;align-items:center;gap:4px;font-size:11px;
+  font-weight:600;padding:3px 9px;border-radius:20px;}
+.sys-status::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
+.sys-status.setup{background:var(--yl);color:#9a6000;}
+.sys-status.done{background:#edfaf0;color:#1a7a38;}
+.sys-status.pending{background:#f0f4ff;color:#3b5bdb;}
+.lic-steps{background:#fff;border-radius:14px;border:1px solid var(--br);
+  padding:22px;margin-bottom:32px;}
+.step-row{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--br);}
+.step-row:last-child{border-bottom:none;padding-bottom:0;}
+.step-num{width:34px;height:34px;border-radius:50%;background:var(--t);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;flex-shrink:0;}
+.step-num.done{background:#1a7a38;}
+.step-num.pend{background:var(--wg);}
+.step-title{font-size:14px;font-weight:700;color:var(--dk);margin-bottom:4px;}
+.step-desc{font-size:12.5px;color:var(--mid);line-height:1.5;}
+.step-dl{font-size:11px;font-weight:600;color:var(--t);margin-top:4px;}
+.step-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
+.step-st{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.step-st.complete{background:#edfaf0;color:#1a7a38;}
+.step-st.inprog{background:var(--yl);color:#9a6000;}
+.step-st.todo{background:var(--tl);color:var(--t);}
+.tr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;}
+.tr-card{background:#fff;border-radius:12px;border:1px solid var(--br);
+  overflow:hidden;cursor:pointer;text-decoration:none;transition:all .2s;}
+.tr-card:hover{transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(0,0,0,.08);}
+.tr-thumb{height:100px;display:flex;align-items:center;justify-content:center;
+  font-size:34px;position:relative;}
+.tr-thumb.tt{background:linear-gradient(135deg,var(--td),var(--t));}
+.tr-thumb.ty{background:linear-gradient(135deg,#c07a00,var(--y));}
+.tr-thumb.tg{background:linear-gradient(135deg,#5a5350,var(--wg));}
+.tr-play{width:42px;height:42px;border-radius:50%;
+  background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.5);
+  display:flex;align-items:center;justify-content:center;}
+.tr-play-ico{width:0;height:0;border-top:9px solid transparent;
+  border-bottom:9px solid transparent;border-left:14px solid #fff;margin-left:3px;}
+.tr-type{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.3);border-radius:4px;
+  padding:2px 7px;font-size:9px;font-weight:700;color:#fff;
+  letter-spacing:.06em;text-transform:uppercase;}
+.tr-info{padding:13px 15px;}
+.tr-name{font-size:13px;font-weight:700;color:var(--dk);margin-bottom:4px;}
+.tr-meta{display:flex;gap:10px;font-size:11px;color:var(--mid);}
+.faq-list{margin-bottom:32px;}
+.faq-item{background:#fff;border-radius:11px;border:1px solid var(--br);
+  margin-bottom:9px;overflow:hidden;}
+.faq-q{padding:15px 18px;display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;font-size:13.5px;font-weight:600;color:var(--dk);transition:background .15s;}
+.faq-q:hover{background:var(--bg);}
+.faq-ico{width:22px;height:22px;border-radius:50%;background:var(--tl);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--t);font-size:16px;font-weight:700;flex-shrink:0;transition:transform .2s;}
+.faq-item.open .faq-ico{transform:rotate(45deg);background:var(--t);color:#fff;}
+.faq-a{padding:0 18px 14px;font-size:13px;color:var(--mid);line-height:1.65;
+  display:none;border-top:1px solid var(--br);padding-top:12px;}
+.faq-item.open .faq-a{display:block;}
+.faq-a a{color:var(--t);font-weight:600;}
+
+/* ── MODAL: admin PIN ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);
+  display:none;align-items:center;justify-content:center;z-index:1000;}
+.modal-overlay.visible{display:flex;}
+.modal-box{background:#fff;border-radius:16px;padding:32px;width:380px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center;}
+.modal-box h3{font-family:'Lora',serif;font-size:20px;font-weight:700;
+  color:var(--dk);margin-bottom:8px;}
+.modal-box p{color:var(--mid);font-size:13.5px;margin-bottom:20px;}
+.modal-box input{width:100%;padding:10px;border:2px solid var(--br);
+  border-radius:8px;font-size:18px;text-align:center;letter-spacing:.3em;
+  font-family:'Barlow',sans-serif;outline:none;margin-bottom:14px;}
+.modal-box input:focus{border-color:var(--t);}
+.modal-err{color:#c0392b;font-size:12px;margin-bottom:10px;display:none;}
+.modal-btns{display:flex;gap:10px;justify-content:center;}
+.modal-cancel{padding:9px 20px;border:2px solid var(--br);border-radius:8px;
+  background:#fff;color:var(--mid);font-weight:600;font-size:13px;
+  cursor:pointer;font-family:'Barlow',sans-serif;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.content>*{animation:fadeUp .35s ease both;}
+.content>*:nth-child(1){animation-delay:.04s;}
+.content>*:nth-child(2){animation-delay:.08s;}
+.content>*:nth-child(3){animation-delay:.12s;}
+.content>*:nth-child(4){animation-delay:.16s;}
+.content>*:nth-child(5){animation-delay:.20s;}
+.content>*:nth-child(6){animation-delay:.24s;}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--br);border-radius:3px;}
+
+
+
+/* ═══════════════════════════════════════════════════
+   MOBILE-FIRST — Hamburger Sidebar + Responsive
+   Partners Mortgage Partner Hub
+═══════════════════════════════════════════════════ */
+
+/* ── HAMBURGER BUTTON ──────────────────────────── */
+.mob-hamburger {
+  display: none;
+  flex-direction: column; justify-content: center;
+  gap: 5px; background: none; border: none;
+  cursor: pointer; padding: 8px 10px 8px 2px;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+.mob-hamburger span {
+  display: block; width: 22px; height: 2.5px;
+  background: rgba(255,255,255,.9); border-radius: 2px;
+  transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
+  transform-origin: center;
+}
+.mob-hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.mob-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mob-hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+/* ── MOBILE LOGO (topbar center) ───────────────── */
+.tb-logo-mob { display: none; align-items: center; }
+
+/* ── SIDEBAR BACKDROP ──────────────────────────── */
+.mob-backdrop {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0); z-index: 149;
+  transition: background 0.3s;
+}
+.mob-backdrop.on {
+  display: block;
+  background: rgba(0,0,0,0.45);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+/* ── TABLET: 768px ─────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Hamburger visible */
+  .mob-hamburger { display: flex; }
+  .tb-logo-mob   { display: flex; }
+  .tb-greet      { display: none; }
+  .tb-search     { display: none; }
+  .tb-date       { display: none; }
+  .topbar        { padding: 0 14px; gap: 10px; }
+
+  /* Sidebar: off-canvas left */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.32s cubic-bezier(0.32,0.72,0,1),
+                box-shadow 0.32s;
+    box-shadow: none;
+    z-index: 250;
+    top: 44px;
+  }
+  .sidebar.mob-open {
+    transform: translateX(0);
+    box-shadow: 6px 0 32px rgba(0,0,0,0.18);
+  }
+
+  /* iOS safe area */
+  .sidebar { top: calc(44px + env(safe-area-inset-top,0px)); }
+
+  /* Main: full width */
+  .main {
+    margin-left: 0 !important;
+    margin-top: 44px;
+  }
+  .main { margin-top: calc(44px + env(safe-area-inset-top,0px)); }
+
+  /* Content padding */
+  .content { padding: 20px 16px 40px; }
+
+  /* Page hero */
+  .page-hero { padding: 28px 20px 0; }
+  .ph-inner  { flex-direction: column; gap: 14px; align-items: flex-start; }
+  .ph-text   { padding-bottom: 0; max-width: 100%; }
+  .ph-text h1 { font-size: 26px; }
+  .ph-text p  { font-size: 13.5px; }
+  .ph-owner  { display: none; }
+  .ph-tabs {
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; width: calc(100% + 40px);
+    margin: 0 -20px; padding: 0 8px;
+  }
+  .ph-tabs::-webkit-scrollbar { display: none; }
+  .ph-tab { white-space: nowrap; padding: 12px 16px; font-size: 12.5px; flex-shrink: 0; }
+
+  /* Grids */
+  .g4         { grid-template-columns: repeat(2,1fr) !important; }
+  .g3         { grid-template-columns: repeat(2,1fr) !important; }
+  .g2         { grid-template-columns: 1fr          !important; }
+  .nav-tiles  { grid-template-columns: repeat(2,1fr) !important; }
+  .dash-metrics { grid-template-columns: repeat(2,1fr) !important; }
+  .sys-grid   { grid-template-columns: repeat(2,1fr) !important; }
+  .tr-grid    { grid-template-columns: repeat(2,1fr) !important; }
+  .cl-grid    { grid-template-columns: 1fr !important; }
+  .plan-grid  { grid-template-columns: 1fr !important; }
+  .lb-grid    { grid-template-columns: 1fr !important; }
+  .uc-grid    { grid-template-columns: repeat(2,1fr) !important; }
+  .uc-upload-slots { grid-template-columns: 1fr !important; }
+  .ls-metrics { grid-template-columns: repeat(2,1fr) !important; }
+  .stub-pages { grid-template-columns: repeat(2,1fr) !important; }
+  .stub-hero  { flex-direction: column; padding: 28px 22px; gap: 16px; }
+  .stub-wrap  { padding: 20px 16px; }
+
+  /* Home bottom 2-col → 1-col (targets inline style) */
+  .home-bottom-grid { grid-template-columns: 1fr !important; }
+
+  /* Pulse widget: 2x2 */
+  .pulse-grid { grid-template-columns: repeat(2,1fr) !important; gap: 14px; }
+  .pulse-cta  { position: static; display: inline-block; margin-top: 14px; font-size: 13px; }
+  .pulse-card { padding: 20px 18px; }
+  .pulse-card::before, .pulse-card::after { display: none; }
+
+  /* Nav tiles: compact */
+  .nt-desc { display: none; }
+  .nav-tile { padding: 16px 12px; gap: 8px; }
+  .nt-name  { font-size: 12px; }
+  .nt-icon  { width: 34px; height: 34px; }
+
+  /* Touch targets */
+  .btn-primary, .pt-btn, .ls-month-btn, .ob-role-btn { min-height: 44px; }
+  input, select, textarea { min-height: 44px; font-size: 16px !important; }
+
+  /* Period toggle: horizontal scroll */
+  .period-toggle {
+    overflow-x: auto; flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; padding-bottom: 2px;
+  }
+  .period-toggle::-webkit-scrollbar { display: none; }
+  .pt-btn { flex-shrink: 0; }
+
+  /* Month grids: scroll */
+  .ls-month-grid {
+    flex-wrap: nowrap; overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .ls-month-grid::-webkit-scrollbar { display: none; }
+  .ls-month-btn { flex-shrink: 0; }
+
+  /* Tables */
+  .lo-table th, .lo-table td { padding: 10px 8px; }
+  .lo-table .lo-vol-bar { display: none; }
+  #ytdTable { font-size: 12px; }
+
+  /* Checklist */
+  .cl-tag   { display: none; }
+  .cl-item  { min-height: 48px; align-items: center; }
+
+  /* Cards */
+  .card     { border-radius: 14px; }
+
+  /* Upload */
+  .uc-section { padding: 18px; }
+  .uc-save-btn { padding: 16px; }
+
+  /* Stat values */
+  .stat-val { font-size: 24px; }
+  .dm-val   { font-size: 22px; }
+  .ls-met-val { font-size: 22px; }
+
+  /* Callout */
+  .callout-y .ct { font-size: 12.5px; }
+
+  /* Topbar height on iOS with notch */
+  .topbar {
+    height: calc(44px + env(safe-area-inset-top,0px));
+    padding-top: env(safe-area-inset-top,0px);
+  }
+}
+
+/* ── PHONE: 480px ──────────────────────────────── */
+@media (max-width: 480px) {
+  .content  { padding: 16px 14px 36px; }
+  .page-hero { padding: 20px 14px 0; }
+  .ph-text h1 { font-size: 21px; }
+
+  .g3       { grid-template-columns: 1fr !important; }
+  .tr-grid  { grid-template-columns: 1fr !important; }
+  .sys-grid { grid-template-columns: repeat(2,1fr) !important; }
+  #st-resources .g3 { grid-template-columns: 1fr !important; }
+
+  .pulse-m-val  { font-size: 19px; }
+  .pulse-m-lbl  { font-size: 9px; }
+  .pulse-metric { padding-left: 10px; }
+  .pulse-card   { padding: 16px 14px; }
+
+  .nt-icon { width: 32px; height: 32px; }
+  .nt-name { font-size: 11px; }
+
+  .stat-val { font-size: 22px; }
+  .dm-val   { font-size: 20px; }
+
+  .stub-pages { grid-template-columns: repeat(2,1fr) !important; }
+}
+
+/* ── iOS SAFE AREAS (notch + home bar) ─────────── */
+@supports (padding: max(0px)) {
+  .main {
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
+/* ── TOUCH: disable hover flicker on mobile ────── */
+@media (hover: none) {
+  .nav-tile:hover, .res-tile:hover, .sys-card:hover,
+  .tr-card:hover, .stub-page:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--br);
+  }
+  .nav-tile:active, .res-tile:active { background: var(--tl); transform: scale(0.97); }
+  .sys-card:active                   { background: var(--tl); }
+  .cl-item:hover                     { background: transparent; }
+  .cl-item:active                    { background: var(--bg); }
+}
+
+/* ── SCROLLBAR: desktop only ───────────────────── */
+@media (min-width: 769px) {
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-thumb { background: var(--br); border-radius: 3px; }
+}
+
+
+</style>
+</head>
+<body>
+
+<!-- ADMIN PIN MODAL -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal-box">
+    <h3>Admin Access</h3>
+    <p>Enter the admin PIN to access the Upload Center.</p>
+    <input type="password" id="adminPinInput" maxlength="4" placeholder="••••"
+      oninput="if(this.value.length===4)submitAdminPin()">
+    <div class="modal-err" id="adminPinErr">Incorrect PIN. Please try again.</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeAdminModal()">Cancel</button>
+      <button class="btn-primary" onclick="submitAdminPin()">Enter</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="tb-left">
+    <button class="mob-hamburger" id="mobHamburger" onclick="toggleSidebar()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="tb-logo-mob" onclick="showSection('home');closeSidebar()">
+      <span style="font-weight:800;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:#fff;">Partners</span>
+      <span style="font-size:10px;color:rgba(255,255,255,.6);letter-spacing:.05em;text-transform:uppercase;margin-left:4px;">Mortgage</span>
+    </div>
+    <div class="tb-greet">Good morning, <strong>Partner</strong></div>
+    <div class="tb-search">
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="white">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
+      </svg>
+      <input type="text" placeholder="Search Partner Hub…">
+    </div>
+  </div>
+  <div class="tb-right">
+    <span class="tb-date" id="tbDate"></span>
+    <button class="tb-gear" title="Admin Upload Center" onclick="openAdminModal()">&#9881;</button>
+    <div class="tb-avatar">PM</div>
+  </div>
+</header>
+<div class="mob-backdrop" id="mobBackdrop" onclick="closeSidebar()"></div>
+<!-- Mobile sidebar backdrop -->
+<div class="mob-backdrop" id="mobBackdrop" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sb-logo" onclick="showSection('home')">
+    <img src="data:image/png;base64,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Ya7MJ1PCzr7Hz/QKKKK7DwgooooA+nrb/j0h/wBxf5VLUVt/x6Q/7i/yqWvIe59xH4UFFFFIo+cPE3/I16x/1/Tf+hmsutTxN/yNesf9f03/AKGay69Wn8C9D4zFfx5+r/MKKKKswCiiigAooooAKKKKACiiigAooooAKKKKACiiigD3X4af8iPaf78n/oZrrq5H4af8iPaf78n/AKGa66vLq/Gz7HB/7vD0QUUUVmdIUUUUAFFFFABRRRQAUUUUAMlTzIXQHBZSM18wMrI5VgQynBB7GvqKvH/HPgK+h1OfU9Kt3uLWdjI8US5eNjyeO4J546V04aai2n1PIzehKpTjOOvLc88oq0dM1AHBsbnP/XJv8KP7Mv8A/nxuf+/Tf4V3nzhVoq1/Zl//AM+Nz/36b/Cj+zL/AP58bn/v03+FAH0pbf8AHpD/ALi/yqWorYYtYQeuxf5VLXkPc+4j8KCiiikUfOHib/ka9Y/6/pv/AEM1l1u+I9PvX8Uas6WdwytezEERMQRvPtWZ/Zl//wA+Nz/36b/CvVp/AvQ+MxX8efq/zKtFWv7Mv/8Anxuf+/Tf4Uf2Zf8A/Pjc/wDfpv8ACrMCrRVr+zL/AP58bn/v03+FH9mX/wDz43P/AH6b/CgCrRVr+zL/AP58bn/v03+FH9mX/wDz43P/AH6b/CgCrRVr+zL/AP58bn/v03+FH9mX/wDz43P/AH6b/CgCrRVr+zL/AP58bn/v03+FH9mX/wDz43P/AH6b/CgCrRVr+zL/AP58bn/v03+FH9mX/wDz43P/AH6b/CgCrRVr+zL/AP58bn/v03+FH9mX/wDz43P/AH6b/CgCrRVr+zL/AP58bn/v03+Fbmg+Bda1q5QNaS2tqT8886FQB7A8k/Sk2krsqMZTfLFXZ6j8NkZPA1iWGNzSMPpvausqtYWMGm6fb2Vsu2GBAig9cDuferNeVN80mz7LDwdOlGD3SQUUUVJsFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAH//2Q==" alt="Partners Mortgage">
+    <div><div class="sb-brand-name">Partners</div><div class="sb-brand-sub">Mortgage</div></div>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-sec-lbl">Main</div>
+    <a class="sb-item" href="#" onclick="showSection('home');return false;">
+      <span class="ico"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg></span>Home</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-sec-lbl">Departments</div>
+    <a class="sb-item" href="#" onclick="showSection('operations');return false;">
+      <span class="ico"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></span>Operations<span class="sb-badge">3</span></a>
+    <a class="sb-item" href="#" onclick="showSection('onboarding');return false;">
+      <span class="ico"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></span>Onboarding</a>
+    <a class="sb-item" href="#" onclick="showSection('sales');return false;">
+      <span class="ico"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></span>Sales</a>
+    <a class="sb-item" href="#" onclick="showSection('marketing');return false;">
+      <span class="ico"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg></span>Marketing</a>
+    <a class="sb-item" href="#" onclick="showSection('hr');return false;">
+      <span class="ico"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></span>HR &amp; Benefits</a>
+    <a class="sb-item" href="#" onclick="showSection('celebrations');return false;">
+      <span class="ico"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></span>Celebrations<span class="sb-badge">2</span></a>
+    <a class="sb-item" href="#" onclick="showSection('lenders');return false;">
+      <span class="ico"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></span>Lenders</a>
+    <a class="sb-item" href="#" onclick="showSection('merch');return false;">
+      <span class="ico"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg></span>Merch Store</a>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-tagline">You matter.</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- ═══════════════════ HOME ═══════════════════ -->
+<div id="section-home" class="section active">
+  <div class="content" style="padding:32px 48px 48px;">
+
+    <!-- Hero -->
+    <div style="background:linear-gradient(135deg,#006570 0%,#00818D 55%,#00a0af 100%);border-radius:16px;padding:34px 40px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-60px;right:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.05);"></div>
+      <div>
+        <div style="font-family:'Lora',serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:8px;">Welcome to the Partner Hub</div>
+        <p style="color:rgba(255,255,255,.75);font-size:14px;max-width:420px;line-height:1.6;">One team, one source of truth — from operations and sales to culture and celebrations. <em style="color:#FFAC27;">You matter here.</em></p>
+      </div>
+      <div style="font-family:'Lora',serif;font-style:italic;font-size:30px;font-weight:600;color:#FFAC27;white-space:nowrap;position:relative;z-index:1;">You matter.</div>
+    </div>
+
+    <!-- Sales Pulse Widget -->
+    <div class="pulse-card" onclick="showSection('sales')" title="View Sales Dashboard">
+      <div class="pulse-top">
+        <div class="pulse-title">⚡ Sales Pulse — Live Dashboard</div>
+        <div class="pulse-updated" id="homeLastUpdated">Loading…</div>
+      </div>
+      <div class="pulse-grid">
+        <div class="pulse-metric">
+          <div class="pulse-m-lbl">MTD Funded Units</div>
+          <div class="pulse-m-val accent" id="homeMtdUnits">—</div>
+          <div class="pulse-m-sub">loans funded</div>
+        </div>
+        <div class="pulse-metric">
+          <div class="pulse-m-lbl">MTD Funded Volume</div>
+          <div class="pulse-m-val" id="homeMtdVol">—</div>
+          <div class="pulse-m-sub">this month</div>
+        </div>
+        <div class="pulse-metric">
+          <div class="pulse-m-lbl">Pipeline (Locked Vol.)</div>
+          <div class="pulse-m-val" id="homePipeline">—</div>
+          <div class="pulse-m-sub">accumulative</div>
+        </div>
+        <div class="pulse-metric">
+          <div class="pulse-m-lbl">Daily Funded</div>
+          <div class="pulse-m-val" id="homeDaily">—</div>
+          <div class="pulse-m-sub">today</div>
+        </div>
+      </div>
+      <a class="pulse-cta">View full dashboard →</a>
+    </div>
+
+    <!-- Stats row -->
+    <div class="g4" style="margin-bottom:24px;">
+      <div class="stat-card c-t"><div class="stat-lbl">Files in Pipeline</div><div class="stat-val">47</div><div class="stat-sub">↑ 8 from last week</div></div>
+      <div class="stat-card c-y"><div class="stat-lbl">Avg Turn Time</div><div class="stat-val">14<span style="font-size:16px;font-weight:500">d</span></div><div class="stat-sub">Goal: 12 days</div></div>
+      <div class="stat-card c-m"><div class="stat-lbl">Team Members</div><div class="stat-val">61</div><div class="stat-sub">2 new this month</div></div>
+      <div class="stat-card c-g"><div class="stat-lbl">Active Lenders</div><div class="stat-val">18</div><div class="stat-sub">1 added this month</div></div>
+    </div>
+
+    <!-- Jump to -->
+    <div style="margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8A7E78;">Jump To</div>
+    <div class="nav-tiles">
+      <a class="nav-tile" href="#" onclick="showSection('operations');return false;"><div class="nt-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><div class="nt-name">Operations</div><div class="nt-desc">Processing, LOA &amp; file lifecycle</div></a>
+      <a class="nav-tile" href="#" onclick="showSection('onboarding');return false;"><div class="nt-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div><div class="nt-name">Onboarding</div><div class="nt-desc">Checklists, 30/60/90 &amp; training</div></a>
+      <a class="nav-tile" href="#" onclick="showSection('sales');return false;"><div class="nt-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div><div class="nt-name">Sales</div><div class="nt-desc">Dashboard, tools &amp; production</div></a>
+      <a class="nav-tile" href="#" onclick="showSection('marketing');return false;"><div class="nt-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg></div><div class="nt-name">Marketing</div><div class="nt-desc">Templates, campaigns &amp; brand</div></a>
+      <a class="nav-tile" href="#" onclick="showSection('hr');return false;"><div class="nt-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div class="nt-name">HR &amp; Benefits</div><div class="nt-desc">Benefits, payroll &amp; PTO</div></a>
+      <a class="nav-tile" href="#" onclick="showSection('celebrations');return false;"><div class="nt-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></div><div class="nt-name">Celebrations</div><div class="nt-desc">Top producers &amp; milestones</div></a>
+      <a class="nav-tile" href="#" onclick="showSection('lenders');return false;"><div class="nt-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div><div class="nt-name">Lenders</div><div class="nt-desc">Approved lenders &amp; AE contacts</div></a>
+      <a class="nav-tile" href="#" onclick="showSection('merch');return false;"><div class="nt-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg></div><div class="nt-name">Merch Store</div><div class="nt-desc">Branded apparel &amp; ordering</div></a>
+    </div>
+
+    <!-- Bottom two-col -->
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;">
+      <div class="card">
+        <div class="card-hd"><span class="card-hd-title">📢 &nbsp;Announcements</span><a class="card-hd-link">View all</a></div>
+        <div class="card-body">
+          <div class="callout-y"><div class="ci">⚡</div><div class="ct">Ops Update: <span>New resubmission SLA goes live Monday — check Operations for details.</span></div></div>
+          <div class="ann-item"><div class="ann-dot t"></div><div class="ann-content"><h4>Partner Hub is Live!</h4><p>Your single source for everything Partners Mortgage. Explore all 8 departments.</p><div class="ann-date">April 6, 2026</div></div></div>
+          <div class="ann-item"><div class="ann-dot y"></div><div class="ann-content"><h4>Q2 Sales Kickoff — April 14</h4><p>Peter Schwartz hosting a live session on purchase-season strategy. All LOs encouraged to attend.</p><div class="ann-date">April 4, 2026</div></div></div>
+          <div class="ann-item"><div class="ann-dot g"></div><div class="ann-content"><h4>Benefits Enrollment Closes April 30</h4><p>Make sure your selections are in. Contact Janine in HR with any questions.</p><div class="ann-date">April 2, 2026</div></div></div>
+          <div class="ann-item"><div class="ann-dot t"></div><div class="ann-content"><h4>New Lender Added: Plaza Home Mortgage</h4><p>Full product matrix and AE contacts now in the Lenders hub.</p><div class="ann-date">March 31, 2026</div></div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="card">
+          <div class="card-hd"><span class="card-hd-title">🏆 Celebrations</span><a class="card-hd-link" onclick="showSection('celebrations')">See all</a></div>
+          <div class="card-body">
+            <div class="celeb-item"><div class="celeb-av" style="background:#e6f4f5;color:#00818D;">JS</div><div class="celeb-text"><h4>Jamie Sanchez</h4><p>Top Producer — March</p></div><div class="celeb-badge">🥇</div></div>
+            <div class="celeb-item"><div class="celeb-av" style="background:#fff8ec;color:#c07a00;">MK</div><div class="celeb-text"><h4>Morgan Kim</h4><p>5-year anniversary 🎉</p></div><div class="celeb-badge">⭐</div></div>
+            <div class="celeb-item"><div class="celeb-av" style="background:#f5f3f2;color:#8A7E78;">RP</div><div class="celeb-text"><h4>Ryan Patel</h4><p>New hire — Welcome!</p></div><div class="celeb-badge">🙌</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><span class="card-hd-title">🔗 Quick Links</span></div>
+          <div class="card-body">
+            <a class="ql-item" href="#"><div class="ql-ico">W</div>WorkDesk Login<span class="ql-arr">→</span></a>
+            <a class="ql-item" href="#"><div class="ql-ico">A</div>Arive Portal<span class="ql-arr">→</span></a>
+            <a class="ql-item" href="#"><div class="ql-ico">📋</div>Submit a Condition<span class="ql-arr">→</span></a>
+            <a class="ql-item" href="#"><div class="ql-ico">📣</div>Marketing Request<span class="ql-arr">→</span></a>
+            <a class="ql-item" href="#"><div class="ql-ico">📅</div>PTO Request<span class="ql-arr">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ ONBOARDING ═══════════════════ -->
+<div id="section-onboarding" class="section">
+  <div class="page-hero">
+    <div class="ph-inner">
+      <div class="ph-text">
+        <div class="ph-eyebrow">📚 Onboarding &amp; Training</div>
+        <h1>Welcome to Partners.<br>Let's get you started right.</h1>
+        <p>WOW onboarding from day one — checklists, your 30/60/90 roadmap, systems setup, licensing, and training all in one place.</p>
+      </div>
+      <div class="ph-owner">
+        <div class="ph-owner-av">RG</div>
+        <div><div class="ph-owner-lbl">Section Owner</div><div class="ph-owner-name">Rachael Gaines</div><div class="ph-owner-role">Affiliate Engagement Manager</div></div>
+      </div>
+    </div>
+    <div class="ph-tabs">
+      <div class="ph-tab active" onclick="showObTab('checklist',this)">✅ Checklist</div>
+      <div class="ph-tab" onclick="showObTab('plan',this)">🗓 30/60/90</div>
+      <div class="ph-tab" onclick="showObTab('systems',this)">💻 Systems</div>
+      <div class="ph-tab" onclick="showObTab('licensing',this)">📋 Licensing</div>
+      <div class="ph-tab" onclick="showObTab('training',this)">🎬 Training</div>
+      <div class="ph-tab" onclick="showObTab('faq',this)">❓ FAQ</div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div id="ob-checklist" class="content">
+    <div class="ob-role-sel">
+      <span class="ob-role-lbl">I am a:</span>
+      <button class="ob-role-btn active">Loan Officer (LO)</button>
+      <button class="ob-role-btn">LOA</button>
+      <button class="ob-role-btn">Ops / Processing</button>
+    </div>
+    <div class="progress-banner">
+      <div class="prog-left">
+        <div class="prog-hdr"><span class="prog-title">Onboarding Progress</span><span class="prog-pct">33%</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:33%"></div></div>
+        <div class="prog-sub">4 of 12 tasks complete · Est. 3 hrs remaining</div>
+      </div>
+      <div class="prog-div"></div>
+      <div class="prog-right">
+        <div class="prog-stat"><div class="prog-stat-num">4</div><div class="prog-stat-lbl">Done</div></div>
+        <div class="prog-stat"><div class="prog-stat-num y">5</div><div class="prog-stat-lbl">Active</div></div>
+        <div class="prog-stat"><div class="prog-stat-num">3</div><div class="prog-stat-lbl">Left</div></div>
+      </div>
+    </div>
+    <div class="callout-y"><div class="ci">⭐</div><div class="ct">Day 1 Tip: <span>Start with HR paperwork and IT setup. Rachael Gaines will walk you through the rest at your welcome meeting.</span></div></div>
+    <div class="cl-grid">
+      <div class="cl-col">
+        <div class="cl-col-hdr w1"><div class="cl-col-hdr-ico">📄</div><div><h3>Week 1 — Getting Started</h3><p>Paperwork, access &amp; first impressions</p></div></div>
+        <div class="cl-body">
+          <div class="cl-item done"><div class="cl-box"></div><div><div class="cl-text">Complete HR new hire paperwork</div><div class="cl-sub">I-9, W-4, direct deposit</div></div><span class="cl-tag hr">HR</span></div>
+          <div class="cl-item done"><div class="cl-box"></div><div><div class="cl-text">Sign offer letter &amp; handbook</div></div><span class="cl-tag req">Required</span></div>
+          <div class="cl-item done"><div class="cl-box"></div><div><div class="cl-text">Get company email activated</div><div class="cl-sub">Contact IT for credentials</div></div><span class="cl-tag it">IT</span></div>
+          <div class="cl-item done"><div class="cl-box"></div><div><div class="cl-text">Welcome call with Rachael Gaines</div></div><span class="cl-tag mgr">Manager</span></div>
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">Set up WorkDesk account &amp; profile</div><div class="cl-sub">See Systems tab for guide</div></div><span class="cl-tag it">IT</span></div>
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">Review company mission &amp; values</div></div></div>
+        </div>
+      </div>
+      <div class="cl-col">
+        <div class="cl-col-hdr w2"><div class="cl-col-hdr-ico">🔧</div><div><h3>Week 2 — Systems &amp; Tools</h3><p>Access, training &amp; first loan</p></div></div>
+        <div class="cl-body">
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">Complete Arive LOS orientation</div><div class="cl-sub">Watch Training Library video first</div></div><span class="cl-tag it">IT</span></div>
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">Submit NMLS license transfer</div><div class="cl-sub">Required before originating loans</div></div><span class="cl-tag req">Required</span></div>
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">Shadow a processor on a live file</div></div><span class="cl-tag mgr">Manager</span></div>
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">Complete Fair Lending training</div><div class="cl-sub">Due by end of Week 2</div></div><span class="cl-tag req">Required</span></div>
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">Set up email signature</div><div class="cl-sub">Template in Marketing hub</div></div></div>
+        </div>
+      </div>
+      <div class="cl-col">
+        <div class="cl-col-hdr w3"><div class="cl-col-hdr-ico">🚀</div><div><h3>Weeks 3–4 — Ramp Up</h3><p>Pipeline, culture &amp; milestones</p></div></div>
+        <div class="cl-body">
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">Submit your first loan in Arive</div></div><span class="cl-tag mgr">Manager</span></div>
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">Pricing engine walkthrough</div><div class="cl-sub">With Peter Schwartz or Sales Lead</div></div></div>
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">30-day check-in with Rachael</div></div><span class="cl-tag mgr">Manager</span></div>
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">Join first team all-hands</div></div></div>
+          <div class="cl-item"><div class="cl-box"></div><div><div class="cl-text">Co-Marketing setup with a Realtor</div><div class="cl-sub">Templates in Marketing hub</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 30/60/90 -->
+  <div id="ob-plan" class="content" style="display:none;">
+    <div class="callout-y"><div class="ci">🗓</div><div class="ct">Your roadmap: <span>This plan sets you up for full productivity by day 90. Your manager reviews milestones at each checkpoint.</span></div></div>
+    <div class="sec-hdr"><h2>Your First 90 Days</h2></div>
+    <div class="plan-grid">
+      <div class="plan-card"><div class="plan-top d30"><div class="plan-badge">Days 1–30</div><h3>Learn</h3><p>Absorb the culture, systems, and people. Ask every question — there are no bad ones.</p></div><div class="plan-body"><div class="plan-item"><div class="plan-dot t"></div><div><div class="plan-item-text">Complete all onboarding paperwork &amp; compliance training</div></div></div><div class="plan-item"><div class="plan-dot t"></div><div><div class="plan-item-text">Set up all systems (WorkDesk, Arive, email)</div></div></div><div class="plan-item"><div class="plan-dot t"></div><div><div class="plan-item-text">Weekly check-ins with Rachael Gaines</div></div></div><div class="plan-item"><div class="plan-dot y"></div><div><div class="plan-item-text">Shadow 3 loan closings from submission to funding</div></div></div><div class="plan-item"><div class="plan-dot g"></div><div><div class="plan-item-text">Attend one team all-hands meeting</div></div></div><div class="plan-item"><div class="plan-dot y"></div><div><div class="plan-item-text">⭐ Milestone: Submit first loan in Arive</div><div class="plan-item-sub">End of Week 3</div></div></div></div></div>
+      <div class="plan-card"><div class="plan-top d60"><div class="plan-badge">Days 31–60</div><h3>Build</h3><p>Start owning your role. Build your pipeline and begin contributing independently.</p></div><div class="plan-body"><div class="plan-item"><div class="plan-dot t"></div><div><div class="plan-item-text">Manage 5+ active loan files independently</div></div></div><div class="plan-item"><div class="plan-dot t"></div><div><div class="plan-item-text">Use the pricing engine without assistance</div></div></div><div class="plan-item"><div class="plan-dot y"></div><div><div class="plan-item-text">Begin co-marketing with at least 1 Realtor</div></div></div><div class="plan-item"><div class="plan-dot t"></div><div><div class="plan-item-text">Join weekly sales strategy sessions with Peter</div></div></div><div class="plan-item"><div class="plan-dot y"></div><div><div class="plan-item-text">⭐ Milestone: First funded loan</div><div class="plan-item-sub">End of Day 60</div></div></div></div></div>
+      <div class="plan-card"><div class="plan-top d90"><div class="plan-badge">Days 61–90</div><h3>Excel</h3><p>You're a full Partner now. Drive results and help shape the culture you're building.</p></div><div class="plan-body"><div class="plan-item"><div class="plan-dot t"></div><div><div class="plan-item-text">Maintain 10+ loan pipeline consistently</div></div></div><div class="plan-item"><div class="plan-dot t"></div><div><div class="plan-item-text">Hit first monthly production target</div></div></div><div class="plan-item"><div class="plan-dot y"></div><div><div class="plan-item-text">Build a database mining outreach plan</div></div></div><div class="plan-item"><div class="plan-dot t"></div><div><div class="plan-item-text">90-day formal review with Rachael &amp; manager</div></div></div><div class="plan-item"><div class="plan-dot y"></div><div><div class="plan-item-text">⭐ Milestone: Fully ramped &amp; self-sufficient</div><div class="plan-item-sub">Day 90 review</div></div></div></div></div>
+    </div>
+  </div>
+
+  <!-- SYSTEMS -->
+  <div id="ob-systems" class="content" style="display:none;">
+    <div class="callout-y"><div class="ci">💻</div><div class="ct">Need IT help? <span>Email it@partnersmortgage.com or ext. 200. Most accounts are provisioned within 24 hours of your start date.</span></div></div>
+    <div class="sec-hdr"><h2>Your Systems &amp; Tools</h2></div>
+    <div class="sys-grid">
+      <a class="sys-card" href="#"><div class="sys-icon">🏠</div><div class="sys-name">WorkDesk</div><div class="sys-desc">CRM and daily workflow hub. Manage contacts, tasks, and pipeline.</div><span class="sys-status setup">Setup Required</span></a>
+      <a class="sys-card" href="#"><div class="sys-icon">📂</div><div class="sys-name">Arive LOS</div><div class="sys-desc">Loan origination — where loans are structured, submitted, and tracked.</div><span class="sys-status setup">Setup Required</span></a>
+      <a class="sys-card" href="#"><div class="sys-icon">📧</div><div class="sys-name">Company Email</div><div class="sys-desc">Your @partnersmortgage.com address. IT provisions on Day 1.</div><span class="sys-status done">Active</span></a>
+      <a class="sys-card" href="#"><div class="sys-icon">💰</div><div class="sys-name">Pricing Engine</div><div class="sys-desc">Real-time rate &amp; margin tool. Training session required before first use.</div><span class="sys-status pending">Training Needed</span></a>
+      <a class="sys-card" href="#"><div class="sys-icon">📊</div><div class="sys-name">Sales Reports</div><div class="sys-desc">Production dashboards, leaderboards, and personal KPI tracking.</div><span class="sys-status pending">Access Pending</span></a>
+      <a class="sys-card" href="#"><div class="sys-icon">💬</div><div class="sys-name">Teams / Slack</div><div class="sys-desc">Team communication. Download the mobile app too.</div><span class="sys-status done">Active</span></a>
+      <a class="sys-card" href="#"><div class="sys-icon">✍️</div><div class="sys-name">DocuSign</div><div class="sys-desc">E-signature for disclosures, conditions, and closing docs.</div><span class="sys-status setup">Setup Required</span></a>
+      <a class="sys-card" href="#"><div class="sys-icon">📋</div><div class="sys-name">NMLS Portal</div><div class="sys-desc">License management and CE tracking. Required to originate in CA.</div><span class="sys-status pending">Transfer Pending</span></a>
+    </div>
+  </div>
+
+  <!-- LICENSING -->
+  <div id="ob-licensing" class="content" style="display:none;">
+    <div class="callout-y"><div class="ci">⚠️</div><div class="ct">Important: <span>You cannot originate loans until your NMLS license is active with Partners. Rachael tracks compliance for all new hires.</span></div></div>
+    <div class="sec-hdr"><h2>Licensing &amp; Compliance Steps</h2></div>
+    <div class="lic-steps">
+      <div class="step-row"><div class="step-num done">✓</div><div style="flex:1;"><div class="step-title">Background Check &amp; Credit Authorization</div><div class="step-desc">Completed via Accurate Background. Results reviewed by HR within 3–5 business days.</div><div class="step-dl">📅 Completed at offer acceptance</div></div><div class="step-right"><span class="step-st complete">Complete</span></div></div>
+      <div class="step-row"><div class="step-num done">✓</div><div style="flex:1;"><div class="step-title">NMLS Registration — New or Transfer</div><div class="step-desc">Submit a sponsorship request through the NMLS portal to transfer to Partners (NMLS #1071). New licensees must pass the SAFE exam first.</div><div class="step-dl">📅 Due by Day 5</div></div><div class="step-right"><span class="step-st complete">Complete</span></div></div>
+      <div class="step-row"><div class="step-num">3</div><div style="flex:1;"><div class="step-title">California DFPI License Verification</div><div class="step-desc">Confirm your individual license is active and in good standing with the DFPI before originating loans.</div><div class="step-dl">📅 Due by Day 10</div></div><div class="step-right"><span class="step-st inprog">In Progress</span></div></div>
+      <div class="step-row"><div class="step-num pend">4</div><div style="flex:1;"><div class="step-title">Fair Lending &amp; HMDA Training</div><div class="step-desc">Mandatory for all LOs. Complete the module in Training Library and submit your certificate to Rachael.</div><div class="step-dl">📅 Due by end of Week 2</div></div><div class="step-right"><span class="step-st todo">To Do</span></div></div>
+      <div class="step-row"><div class="step-num pend">5</div><div style="flex:1;"><div class="step-title">BSA / AML Training</div><div class="step-desc">Federal requirement. Complete the AML module and pass the quiz (80% minimum).</div><div class="step-dl">📅 Due by end of Week 2</div></div><div class="step-right"><span class="step-st todo">To Do</span></div></div>
+      <div class="step-row"><div class="step-num pend">6</div><div style="flex:1;"><div class="step-title">Annual CE Requirements (Licensed MLOs)</div><div class="step-desc">8 hours of NMLS-approved CE required annually. Rachael will send reminders.</div><div class="step-dl">📅 Annual — tracked by Rachael</div></div><div class="step-right"><span class="step-st todo">Ongoing</span></div></div>
+    </div>
+  </div>
+
+  <!-- TRAINING -->
+  <div id="ob-training" class="content" style="display:none;">
+    <div class="sec-hdr"><h2>Training Library</h2><a href="#">Browse all →</a></div>
+    <div class="divider"><div class="divider-line"></div><div class="divider-lbl">New Hire Essentials</div><div class="divider-line"></div></div>
+    <div class="tr-grid">
+      <a class="tr-card" href="#"><div class="tr-thumb tt"><div class="tr-play"><div class="tr-play-ico"></div></div><span class="tr-type">Video</span></div><div class="tr-info"><div class="tr-name">WorkDesk: Getting Started</div><div class="tr-meta"><span>⏱ 18 min</span><span>👤 IT Team</span></div></div></a>
+      <a class="tr-card" href="#"><div class="tr-thumb tt"><div class="tr-play"><div class="tr-play-ico"></div></div><span class="tr-type">Video</span></div><div class="tr-info"><div class="tr-name">Arive LOS: Your First Submission</div><div class="tr-meta"><span>⏱ 32 min</span><span>👤 Ops Team</span></div></div></a>
+      <a class="tr-card" href="#"><div class="tr-thumb ty"><div class="tr-play"><div class="tr-play-ico"></div></div><span class="tr-type">Video</span></div><div class="tr-info"><div class="tr-name">Pricing Engine Walkthrough</div><div class="tr-meta"><span>⏱ 24 min</span><span>👤 Peter Schwartz</span></div></div></a>
+    </div>
+    <div class="divider"><div class="divider-line"></div><div class="divider-lbl">SOPs &amp; Reference Docs</div><div class="divider-line"></div></div>
+    <div class="tr-grid">
+      <a class="tr-card" href="#"><div class="tr-thumb tg" style="font-size:38px;display:flex;align-items:center;justify-content:center;">📄<span class="tr-type">SOP</span></div><div class="tr-info"><div class="tr-name">File Submission SOP</div><div class="tr-meta"><span>📄 PDF</span><span>👤 Kendra / Ops</span></div></div></a>
+      <a class="tr-card" href="#"><div class="tr-thumb tg" style="font-size:38px;display:flex;align-items:center;justify-content:center;">📋<span class="tr-type">SOP</span></div><div class="tr-info"><div class="tr-name">Conditions &amp; Resubmission Guide</div><div class="tr-meta"><span>📄 PDF</span><span>👤 Kendra / Ops</span></div></div></a>
+      <a class="tr-card" href="#"><div class="tr-thumb ty"><div class="tr-play"><div class="tr-play-ico"></div></div><span class="tr-type">Video</span></div><div class="tr-info"><div class="tr-name">Fair Lending Compliance Training</div><div class="tr-meta"><span>⏱ 45 min</span><span>🏆 CE Credit</span></div></div></a>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div id="ob-faq" class="content" style="display:none;">
+    <div class="sec-hdr"><h2>FAQ — Where Do I Go For…?</h2></div>
+    <div class="faq-list">
+      <div class="faq-item open"><div class="faq-q" onclick="toggleFaq(this)">Who do I contact about my NMLS license?<div class="faq-ico">+</div></div><div class="faq-a">Reach out to <a href="#">Rachael Gaines</a> directly — she manages all licensing and compliance tracking for new hires. For urgent NMLS portal issues, call NMLS support at 1-855-665-7123.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Where do I find payroll information?<div class="faq-ico">+</div></div><div class="faq-a">Payroll details and pay stubs are in the <a href="#" onclick="showSection('hr')">HR &amp; Benefits</a> section. For direct questions, contact Janine in HR.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">I need IT help — who do I call?<div class="faq-ico">+</div></div><div class="faq-a">Email <a href="#">it@partnersmortgage.com</a> or call ext. 200 during business hours. For Arive or WorkDesk issues, check the Systems tab above for troubleshooting guides.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I request marketing materials?<div class="faq-ico">+</div></div><div class="faq-a">Go to the <a href="#" onclick="showSection('marketing')">Marketing</a> hub and use the Request Form. Templates for social media, co-marketing flyers, and listing materials are available there.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Who do I talk to about loan escalations?<div class="faq-ico">+</div></div><div class="faq-a">The <a href="#" onclick="showSection('operations')">Operations</a> hub has a full Escalation / Problem Resolution guide. For immediate help, use the Contact Directory to find Kendra or the LOA on your file.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I request time off?<div class="faq-ico">+</div></div><div class="faq-a">PTO requests go through the HR portal — find the link in the <a href="#" onclick="showSection('hr')">HR &amp; Benefits</a> section. The PTO &amp; Time-Off Guidelines page covers accrual rates and blackout periods.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SALES ═══════════════════ -->
+<div id="section-sales" class="section">
+  <div class="page-hero">
+    <div class="ph-inner">
+      <div class="ph-text">
+        <div class="ph-eyebrow">📈 Sales &amp; Production</div>
+        <h1>Drive Revenue.<br>Own Your Numbers.</h1>
+        <p>Your tools, playbooks, live production dashboard, and leadership reporting — all in one place. Revenue behavior starts here.</p>
+      </div>
+      <div class="ph-owner">
+        <div class="ph-owner-av">JM</div>
+        <div><div class="ph-owner-lbl">Section Owners</div><div class="ph-owner-name">Jason Malmstrom &amp; Matt Perez</div><div class="ph-owner-role">Directors of Production</div></div>
+      </div>
+    </div>
+    <div class="ph-tabs">
+      <div class="ph-tab active" onclick="showSalesTab('resources',this)">🛠 Resources</div>
+      <div class="ph-tab" onclick="showSalesTab('field',this)">📊 Field Dashboard</div>
+      <div class="ph-tab" onclick="showSalesTab('lo',this)">👤 LO Performance</div>
+      <div class="ph-tab" onclick="showSalesTab('leadership',this)">🔒 Leadership</div>
+    </div>
+  </div>
+
+  <!-- ── RESOURCES TAB ── -->
+  <div id="st-resources" class="content">
+    <div class="callout-y"><div class="ci">💡</div><div class="ct">Weekly Focus: <span>Purchase season is here. Check the Database Mining Playbook and co-marketing templates in Marketing. Peter's Q2 strategy session is April 14.</span></div></div>
+    <div class="sec-hdr"><h2>Sales Tools &amp; Systems</h2></div>
+    <div class="g4" style="margin-bottom:32px;">
+      <a class="res-tile" href="#"><div class="res-icon">🏠</div><div class="res-name">WorkDesk</div><div class="res-desc">CRM hub. Manage contacts, pipeline, and daily tasks.</div><span class="res-badge key">Core Tool</span></a>
+      <a class="res-tile" href="#"><div class="res-icon">📂</div><div class="res-name">Arive LOS</div><div class="res-desc">Structure and submit loans. Full origination workflow.</div><span class="res-badge key">Core Tool</span></a>
+      <a class="res-tile" href="#" onclick="showSalesTab('field',document.querySelectorAll('.ph-tab')[1]);return false;"><div class="res-icon">📊</div><div class="res-name">Sales Dashboard</div><div class="res-desc">Live production metrics, leaderboards, and KPIs.</div><span class="res-badge new">Live Data</span></a>
+      <a class="res-tile" href="#"><div class="res-icon">💰</div><div class="res-name">Pricing Engine</div><div class="res-desc">Real-time rate pricing and margin guardrails.</div><span class="res-badge key">Core Tool</span></a>
+    </div>
+    <div class="sec-hdr"><h2>Playbooks &amp; Strategy</h2></div>
+    <div class="g3" style="margin-bottom:32px;">
+      <div class="res-tile"><div class="res-icon">⛏️</div><div class="res-name">Database Mining Playbook</div><div class="res-desc">Step-by-step system for mining your existing database for referrals, refi opportunities, and past clients.</div><span class="res-badge new">Updated Q2</span></div>
+      <div class="res-tile"><div class="res-icon">🏡</div><div class="res-name">Purchase vs. Refi Strategy</div><div class="res-desc">When to push purchase, when to push refi — market signals, scripts, and qualifying questions.</div></div>
+      <div class="res-tile"><div class="res-icon">🎯</div><div class="res-name">Scripts &amp; Conversion Tactics</div><div class="res-desc">Proven call scripts, objection handlers, and follow-up cadences for every stage of the funnel.</div></div>
+      <div class="res-tile"><div class="res-icon">📋</div><div class="res-name">Product Cheat Sheets</div><div class="res-desc">Quick-reference cards for conventional, FHA, VA, jumbo, and specialty products.</div><span class="res-badge new">New products added</span></div>
+      <div class="res-tile"><div class="res-icon">📅</div><div class="res-name">Weekly Focus &amp; Sales Themes</div><div class="res-desc">Peter Schwartz's weekly priorities, talking points, and team challenges. Updated every Monday.</div></div>
+      <div class="res-tile"><div class="res-icon">🤝</div><div class="res-name">Co-Marketing with Realtors</div><div class="res-desc">Templates, co-branded flyers, and outreach cadences for Realtor partnership programs.</div></div>
+    </div>
+  </div>
+
+  <!-- ── FIELD DASHBOARD TAB ── -->
+  <div id="st-field" class="content" style="display:none;">
+    <div class="period-toggle">
+      <button class="pt-btn active" onclick="setPeriod('mtd',this)">MTD</button>
+      <button class="pt-btn" onclick="setPeriod('daily',this)">Daily</button>
+      <button class="pt-btn" onclick="setPeriod('wtd',this)">WTD</button>
+      <button class="pt-btn" onclick="setPeriod('prior',this)">Prior Month</button>
+      <button class="pt-btn" onclick="setPeriod('ytd',this)">YTD</button>
+    </div>
+    <div class="dash-metrics" id="dashMetrics">
+      <div class="dm-card c1"><div class="dm-lbl">Funded Units</div><div class="dm-val" id="dmUnits">—</div><div class="dm-sub" id="dmUnitsSub">loading…</div></div>
+      <div class="dm-card c2"><div class="dm-lbl">Funded Volume</div><div class="dm-val" id="dmVol">—</div><div class="dm-sub" id="dmVolSub"></div></div>
+      <div class="dm-card c3"><div class="dm-lbl">Pipeline (Locked Vol.)</div><div class="dm-val" id="dmPipeline">—</div><div class="dm-sub" id="dmPipelineSub"></div></div>
+      <div class="dm-card c4"><div class="dm-lbl">Daily Funded</div><div class="dm-val" id="dmDaily">—</div><div class="dm-sub" id="dmDailySub">units today</div></div>
+    </div>
+    <div class="lb-grid" id="leaderboards">
+      <div class="lb-card">
+        <div class="lb-hdr"><div class="lb-hdr-title">🏆 Fundings</div><div class="lb-hdr-badge">MTD</div></div>
+        <div id="lb-fundings">
+          <div class="lb-row" style="color:#8A7E78;font-size:13px;padding:14px 18px;">Upload CRM data to populate leaderboard</div>
+        </div>
+      </div>
+      <div class="lb-card">
+        <div class="lb-hdr"><div class="lb-hdr-title">🔒 Locked Loans</div><div class="lb-hdr-badge">MTD</div></div>
+        <div id="lb-locked">
+          <div class="lb-row" style="color:#8A7E78;font-size:13px;padding:14px 18px;">Upload CRM data to populate leaderboard</div>
+        </div>
+      </div>
+      <div class="lb-card">
+        <div class="lb-hdr"><div class="lb-hdr-title">📝 Applications</div><div class="lb-hdr-badge">MTD</div></div>
+        <div id="lb-apps">
+          <div class="lb-row" style="color:#8A7E78;font-size:13px;padding:14px 18px;">Upload CRM data to populate leaderboard</div>
+        </div>
+      </div>
+      <div class="lb-card">
+        <div class="lb-hdr"><div class="lb-hdr-title">💡 New Leads</div><div class="lb-hdr-badge">MTD</div></div>
+        <div id="lb-leads">
+          <div class="lb-row" style="color:#8A7E78;font-size:13px;padding:14px 18px;">Upload CRM data to populate leaderboard</div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:#8A7E78;text-align:center;padding:8px;">
+      Data sourced from daily uploads by Aidan Boyd. Use ⚙ Admin to update.
+    </div>
+  </div>
+
+  <!-- ── LO PERFORMANCE TAB ── -->
+  <div id="st-lo" class="content" style="display:none;">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap;">
+      <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8A7E78;">Month:</span>
+      <div id="loMonthBtns" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+    </div>
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-hd"><span class="card-hd-title">LO Production — <span id="loMonthLabel">Select a month</span></span></div>
+      <div style="overflow-x:auto;">
+        <table class="lo-table" id="loTable">
+          <thead><tr><th>#</th><th>Loan Officer</th><th>Branch/Team</th><th>Units Funded</th><th>Volume</th><th>Volume Share</th></tr></thead>
+          <tbody id="loTableBody">
+            <tr><td colspan="6" style="text-align:center;color:#8A7E78;padding:20px;">Select a month above to view LO performance</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LEADERSHIP TAB ── -->
+  <div id="st-leadership" class="content" style="display:none;">
+    <div id="ls-pin-gate">
+      <div class="ls-pin-wrap">
+        <div style="font-size:40px;margin-bottom:14px;">🔒</div>
+        <h3>Leadership Access Only</h3>
+        <p>Enter your PIN to view detailed monthly metrics, MoM trends, and YTD performance data.</p>
+        <div class="pin-input-row">
+          <input type="password" class="pin-input" id="lsPinInput" maxlength="4" placeholder="••••"
+            oninput="if(this.value.length===4)checkLsPin()">
+          <button class="btn-primary" onclick="checkLsPin()">Unlock</button>
+        </div>
+        <div class="pin-err" id="lsPinErr" style="display:none;">Incorrect PIN. Please try again.</div>
+      </div>
+    </div>
+    <div id="ls-content" style="display:none;">
+      <div class="callout-y" style="margin-bottom:20px;"><div class="ci">📊</div><div class="ct">Leadership View: <span>Month-end confirmed records only. Select a month below to view deep metrics.</span></div></div>
+      <div class="ls-month-grid" id="lsMonthGrid"></div>
+      <div id="ls-month-detail" style="display:none;">
+        <div class="ls-metrics" id="lsMetrics"></div>
+        <div class="g2">
+          <div class="card">
+            <div class="card-hd"><span class="card-hd-title">YTD Summary</span></div>
+            <div style="overflow-x:auto;">
+              <table class="lo-table" id="ytdTable">
+                <thead><tr><th>Month</th><th>Units</th><th>Funded Vol.</th><th>Pipeline Vol.</th><th>MoM Units</th></tr></thead>
+                <tbody id="ytdTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-hd-title">Recruiting Pipeline</span></div>
+            <div class="card-body" id="lsRecruiting">
+              <div style="color:#8A7E78;font-size:13px;">No recruiting data recorded for this month.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── UPLOAD CENTER (admin only, shown via gear icon) ── -->
+  <div id="st-upload" class="uc-wrap" style="display:none;">
+    <div class="content">
+      <div class="callout-y"><div class="ci">⚙</div><div class="ct">Admin Upload Center — <span>Aidan Boyd's daily data entry panel. All fields are optional except Report Date.</span></div></div>
+
+      <div class="uc-section">
+        <h3>Headline Numbers</h3>
+        <div class="uc-sub">Enter from the daily leadership email. All fields optional except date.</div>
+        <div class="uc-grid">
+          <div class="uc-field"><label>Report Date</label><input type="date" id="uc-date"></div>
+          <div class="uc-field"><label>MTD Funded Units</label><input type="number" id="uc-units" placeholder="e.g. 47"></div>
+          <div class="uc-field"><label>MTD Funded Volume ($)</label><input type="number" id="uc-vol" placeholder="e.g. 22500000"></div>
+          <div class="uc-field"><label>Locked Vol. Accumulative ($)</label><input type="number" id="uc-pipeline" placeholder="Col D of XLSX"></div>
+          <div class="uc-field"><label>Locked Units (Docs Out / CTC)</label><input type="number" id="uc-locked-units" placeholder="e.g. 12"></div>
+          <div class="uc-field"><label>Daily Funded Count</label><input type="number" id="uc-daily" placeholder="e.g. 3"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;">
+          <div class="uc-field"><label>Recruiting: New Hires</label><input type="number" id="uc-rhires" placeholder="0"></div>
+          <div class="uc-field"><label>Recruiting: LOIs Out</label><input type="number" id="uc-rloi" placeholder="0"></div>
+          <div class="uc-field"><label>Recruiting: In Play</label><input type="number" id="uc-rplay" placeholder="0"></div>
+        </div>
+        <div class="uc-checkbox-row" style="margin-top:14px;">
+          <input type="checkbox" id="uc-monthend">
+          <label for="uc-monthend">☑ This is the final month-end record (check on last business day of the month)</label>
+        </div>
+      </div>
+
+      <div class="uc-section">
+        <h3>CRM Chart Screenshots</h3>
+        <div class="uc-sub">Upload screenshots from Aidan's daily Outlook email. AI will extract MA names and units.</div>
+        <div class="uc-upload-slots">
+          <div class="uc-slot" id="slot-fundings">
+            <input type="file" accept="image/*" onchange="handleChartUpload(this,'fundings')">
+            <div class="uc-slot-title">📊 Fundings Report</div>
+            <div class="uc-slot-hint">MA names + units + volume</div>
+            <div class="uc-extracted" id="ext-fundings" style="display:none;"></div>
+          </div>
+          <div class="uc-slot" id="slot-locked">
+            <input type="file" accept="image/*" onchange="handleChartUpload(this,'locked')">
+            <div class="uc-slot-title">🔒 Locked Loans</div>
+            <div class="uc-slot-hint">MA names + unit counts</div>
+            <div class="uc-extracted" id="ext-locked" style="display:none;"></div>
+          </div>
+          <div class="uc-slot" id="slot-apps">
+            <input type="file" accept="image/*" onchange="handleChartUpload(this,'apps')">
+            <div class="uc-slot-title">📝 Applications</div>
+            <div class="uc-slot-hint">MA names + counts</div>
+            <div class="uc-extracted" id="ext-apps" style="display:none;"></div>
+          </div>
+          <div class="uc-slot" id="slot-leads">
+            <input type="file" accept="image/*" onchange="handleChartUpload(this,'leads')">
+            <div class="uc-slot-title">💡 New Leads</div>
+            <div class="uc-slot-hint">MA names + counts</div>
+            <div class="uc-extracted" id="ext-leads" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="uc-section">
+        <h3>Monthly Production Report</h3>
+        <div class="uc-sub">Upload the production XLSX or CSV. AI parses all rows. Locked Vol. Accumulative (Col D) = pipeline.</div>
+        <div class="uc-slot" style="max-width:400px;" id="slot-xlsx">
+          <input type="file" accept=".xlsx,.csv,.xls" onchange="handleXlsxUpload(this)">
+          <div class="uc-slot-title">📁 Drop XLSX or CSV here</div>
+          <div class="uc-slot-hint">All date rows will be parsed and merged</div>
+          <div class="uc-extracted" id="ext-xlsx" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="uc-section">
+        <h3>LO Monthly Numbers</h3>
+        <div class="uc-sub">Enter once at month-end per LO. Powers the LO Performance tab.</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#8A7E78;">Month:</span>
+          <input type="month" id="uc-lo-month" style="padding:7px 12px;border:1px solid #e2dedd;border-radius:8px;font-family:'Barlow',sans-serif;font-size:13px;outline:none;">
+        </div>
+        <table class="uc-lo-table">
+          <thead><tr><th>LO Name</th><th>Branch / Team</th><th>Units Funded</th><th>Volume ($)</th><th></th></tr></thead>
+          <tbody id="uc-lo-body">
+            <tr>
+              <td><input type="text" placeholder="Full name"></td>
+              <td><input type="text" placeholder="Branch"></td>
+              <td><input type="number" placeholder="0"></td>
+              <td><input type="number" placeholder="0"></td>
+              <td><button onclick="removeLoRow(this)" style="background:none;border:none;cursor:pointer;color:#c0392b;font-size:16px;">✕</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="add-row-btn" onclick="addLoRow()">+ Add LO</button>
+      </div>
+
+      <button class="uc-save-btn" onclick="saveAndPublish()">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+        Save &amp; Publish
+      </button>
+      <div id="uc-status" style="text-align:center;font-size:13px;color:#8A7E78;margin-top:10px;"></div>
+    </div>
+  </div>
+</div>
+
+<div id="section-operations" class="section">
+  <div class="stub-wrap">
+    <div class="stub-hero">
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FFAC27;margin-bottom:8px;">⚙️ OPERATIONS</div>
+        <div class="stub-title">Operations</div>
+        <div class="stub-sub">Consistency, speed, and fewer fire drills — from file submission to clear-to-close.</div>
+      </div>
+      <div style="text-align:right;position:relative;z-index:1;">
+        <div class="stub-coming">In Build</div>
+        <div style="margin-top:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#FFAC27;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#006570;">KO</div>
+          <div><div style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);">Section Owner</div><div style="font-size:13px;font-weight:700;color:#fff;">Kendra</div><div style="font-size:11px;color:rgba(255,255,255,.6);">Processing Lead</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="stub-pages"><div class="stub-page">
+          <div class="stub-page-icon">📄</div>
+          <div class="stub-page-name">Processing Overview</div>
+          <div class="stub-page-desc">How files flow from submission to funding</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">🗂</div>
+          <div class="stub-page-name">LOA Hub</div>
+          <div class="stub-page-desc">Daily workflow, expectations, and escalation</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">🔄</div>
+          <div class="stub-page-name">File Lifecycle</div>
+          <div class="stub-page-desc">Submission → conditions → clear-to-close → funding</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">⏱</div>
+          <div class="stub-page-name">Turn Times Dashboard</div>
+          <div class="stub-page-desc">Live lender and internal turn time tracking</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📋</div>
+          <div class="stub-page-name">Conditions & Resubmissions</div>
+          <div class="stub-page-desc">Guide for clearing conditions fast</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">🚨</div>
+          <div class="stub-page-name">Escalation / Resolution</div>
+          <div class="stub-page-desc">Who to call when a file gets stuck</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📞</div>
+          <div class="stub-page-name">Contact Directory</div>
+          <div class="stub-page-desc">The right person for every situation</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📊</div>
+          <div class="stub-page-name">Ops Metrics</div>
+          <div class="stub-page-desc">Funded volume, condition cycles, CTC rates</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+</div>
+  </div>
+</div>
+<div id="section-marketing" class="section">
+  <div class="stub-wrap">
+    <div class="stub-hero">
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FFAC27;margin-bottom:8px;">📣 MARKETING</div>
+        <div class="stub-title">Marketing</div>
+        <div class="stub-sub">Make marketing plug-and-play for LOs — templates, campaigns, and brand toolkit.</div>
+      </div>
+      <div style="text-align:right;position:relative;z-index:1;">
+        <div class="stub-coming">In Build</div>
+        <div style="margin-top:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#FFAC27;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#006570;">TBD</div>
+          <div><div style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);">Section Owner</div><div style="font-size:13px;font-weight:700;color:#fff;">TBD</div><div style="font-size:11px;color:rgba(255,255,255,.6);">Head of Marketing (Hiring)</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="stub-pages"><div class="stub-page">
+          <div class="stub-page-icon">🎨</div>
+          <div class="stub-page-name">Co-Marketing Toolkit</div>
+          <div class="stub-page-desc">Co-branded templates for Realtor partnerships</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📱</div>
+          <div class="stub-page-name">Social Media Templates</div>
+          <div class="stub-page-desc">Ready-to-post content for all platforms</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📅</div>
+          <div class="stub-page-name">Campaign Calendar</div>
+          <div class="stub-page-desc">Monthly marketing themes and campaigns</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📖</div>
+          <div class="stub-page-name">Brand Guidelines</div>
+          <div class="stub-page-desc">Colors, fonts, logo rules, and voice</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📩</div>
+          <div class="stub-page-name">Marketing Request Form</div>
+          <div class="stub-page-desc">Submit a request for custom materials</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">🏆</div>
+          <div class="stub-page-name">Success Stories</div>
+          <div class="stub-page-desc">Case studies and client win highlights</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+</div>
+  </div>
+</div>
+<div id="section-hr" class="section">
+  <div class="stub-wrap">
+    <div class="stub-hero">
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FFAC27;margin-bottom:8px;">👥 HR & BENEFITS</div>
+        <div class="stub-title">HR & Benefits</div>
+        <div class="stub-sub">Reduce confusion and admin questions — benefits, payroll, and policies in one place.</div>
+      </div>
+      <div style="text-align:right;position:relative;z-index:1;">
+        <div class="stub-coming">In Build</div>
+        <div style="margin-top:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#FFAC27;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#006570;">JN</div>
+          <div><div style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);">Section Owner</div><div style="font-size:13px;font-weight:700;color:#fff;">Janine</div><div style="font-size:11px;color:rgba(255,255,255,.6);">HR / Office Management</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="stub-pages"><div class="stub-page">
+          <div class="stub-page-icon">🏥</div>
+          <div class="stub-page-name">Benefits Overview</div>
+          <div class="stub-page-desc">Health, dental, vision, and 401(k)</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📝</div>
+          <div class="stub-page-name">Enrollment Instructions</div>
+          <div class="stub-page-desc">How to enroll or change your coverage</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">💵</div>
+          <div class="stub-page-name">Payroll & Compensation</div>
+          <div class="stub-page-desc">Pay schedule, direct deposit, and comp basics</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📚</div>
+          <div class="stub-page-name">Policies & Handbook</div>
+          <div class="stub-page-desc">Company policies, code of conduct, and procedures</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">🌴</div>
+          <div class="stub-page-name">PTO / Time-Off</div>
+          <div class="stub-page-desc">Accrual rates, request process, and blackout dates</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">🤝</div>
+          <div class="stub-page-name">Employee Support</div>
+          <div class="stub-page-desc">EAP, resources, and assistance programs</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+</div>
+  </div>
+</div>
+<div id="section-celebrations" class="section">
+  <div class="stub-wrap">
+    <div class="stub-hero">
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FFAC27;margin-bottom:8px;">🏆 PARTNER CELEBRATIONS</div>
+        <div class="stub-title">Partner Celebrations</div>
+        <div class="stub-sub">Reinforce culture and recognition — top producers, milestones, and personal wins.</div>
+      </div>
+      <div style="text-align:right;position:relative;z-index:1;">
+        <div class="stub-coming">In Build</div>
+        <div style="margin-top:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#FFAC27;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#006570;">MKT</div>
+          <div><div style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);">Section Owner</div><div style="font-size:13px;font-weight:700;color:#fff;">Marketing / Ops</div><div style="font-size:11px;color:rgba(255,255,255,.6);">Shared Ownership</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="stub-pages"><div class="stub-page">
+          <div class="stub-page-icon">🥇</div>
+          <div class="stub-page-name">Top Producers</div>
+          <div class="stub-page-desc">Monthly and weekly leaderboard highlights</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">👋</div>
+          <div class="stub-page-name">New Hire Announcements</div>
+          <div class="stub-page-desc">Welcome our newest Partners</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">🎂</div>
+          <div class="stub-page-name">Anniversaries & Milestones</div>
+          <div class="stub-page-desc">Work anniversaries and tenure recognition</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">🎉</div>
+          <div class="stub-page-name">Personal Wins</div>
+          <div class="stub-page-desc">Life events, shoutouts, and team celebrations</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📊</div>
+          <div class="stub-page-name">Leaderboard Highlights</div>
+          <div class="stub-page-desc">Standout stats and performance callouts</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+</div>
+  </div>
+</div>
+<div id="section-lenders" class="section">
+  <div class="stub-wrap">
+    <div class="stub-hero">
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FFAC27;margin-bottom:8px;">🏦 LENDERS</div>
+        <div class="stub-title">Lenders</div>
+        <div class="stub-sub">Help LOs choose the right lender faster — products, turn times, and AE contacts.</div>
+      </div>
+      <div style="text-align:right;position:relative;z-index:1;">
+        <div class="stub-coming">In Build</div>
+        <div style="margin-top:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#FFAC27;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#006570;">SC</div>
+          <div><div style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);">Section Owner</div><div style="font-size:13px;font-weight:700;color:#fff;">Secondary / Cap Markets</div><div style="font-size:11px;color:rgba(255,255,255,.6);">+ You</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="stub-pages"><div class="stub-page">
+          <div class="stub-page-icon">✅</div>
+          <div class="stub-page-name">Approved Lender List</div>
+          <div class="stub-page-desc">Full list of active, approved lending partners</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📋</div>
+          <div class="stub-page-name">Product Matrix by Lender</div>
+          <div class="stub-page-desc">Product availability by lender at a glance</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">⏱</div>
+          <div class="stub-page-name">Turn Times by Lender</div>
+          <div class="stub-page-desc">Current processing and underwriting turn times</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📞</div>
+          <div class="stub-page-name">AE Directory</div>
+          <div class="stub-page-desc">Account executive contacts for every lender</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">💡</div>
+          <div class="stub-page-name">Submission Tips</div>
+          <div class="stub-page-desc">Lender-specific tips to avoid conditions</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">🎯</div>
+          <div class="stub-page-name">Promotions & Specials</div>
+          <div class="stub-page-desc">Current lender promotions and pricing specials</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+</div>
+  </div>
+</div>
+<div id="section-merch" class="section">
+  <div class="stub-wrap">
+    <div class="stub-hero">
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FFAC27;margin-bottom:8px;">👕 MERCH STORE</div>
+        <div class="stub-title">Merch Store</div>
+        <div class="stub-sub">Support brand identity and recruiting appeal with Partners-branded gear.</div>
+      </div>
+      <div style="text-align:right;position:relative;z-index:1;">
+        <div class="stub-coming">In Build</div>
+        <div style="margin-top:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#FFAC27;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#006570;">MKT</div>
+          <div><div style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);">Section Owner</div><div style="font-size:13px;font-weight:700;color:#fff;">Marketing</div><div style="font-size:11px;color:rgba(255,255,255,.6);">Brand Owner</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="stub-pages"><div class="stub-page">
+          <div class="stub-page-icon">👕</div>
+          <div class="stub-page-name">Apparel Store</div>
+          <div class="stub-page-desc">Order branded shirts, hats, and outerwear</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">📦</div>
+          <div class="stub-page-name">Order Instructions</div>
+          <div class="stub-page-desc">Sizing, lead times, and delivery info</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+<div class="stub-page">
+          <div class="stub-page-icon">🎨</div>
+          <div class="stub-page-name">Branding Usage Rules</div>
+          <div class="stub-page-desc">What you can and cannot put the logo on</div>
+          <span class="wip-badge">Coming Soon</span>
+        </div>
+</div>
+  </div>
+</div>
+</div>
+
+<script>
+
+// ── DATE ───────────────────────────────────────────────────────────────
+document.getElementById('tbDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'});
+
+// ── SEED DATA (real, confirmed — do NOT modify) ────────────────────────
+const SEED_LOG = [
+  {date:'2026-03-31',mtdFundedUnits:73,mtdFundedVol:36198638,pipelineVol:35024686,pipelineUnits:0,dailyFunded:0,month_end:true},
+  {date:'2026-02-28',mtdFundedUnits:68,mtdFundedVol:32949251,pipelineVol:37152875,pipelineUnits:0,dailyFunded:0,month_end:true},
+  {date:'2026-01-30',mtdFundedUnits:36,mtdFundedVol:20031303,pipelineVol:14608818,pipelineUnits:0,dailyFunded:0,month_end:true},
+  {date:'2025-10-31',mtdFundedUnits:67,mtdFundedVol:29227279,pipelineVol:6764871,pipelineUnits:0,dailyFunded:0,month_end:true},
+];
+
+// ── STORAGE (localStorage with pm3_ prefix, GitHub Pages compatible) ───
+function pmGet(key){try{const v=localStorage.getItem('pm3_'+key);return v?JSON.parse(v):null;}catch(e){return null;}}
+function pmSet(key,val){try{localStorage.setItem('pm3_'+key,JSON.stringify(val));}catch(e){}}
+
+// ── MERGE log: seed month_end flags always survive ─────────────────────
+function getLog(){
+  const stored = pmGet('log') || [];
+  const merged = {};
+  SEED_LOG.forEach(e=>{merged[e.date]={...e};});
+  stored.forEach(e=>{
+    if(merged[e.date]){
+      merged[e.date]={...e, month_end: merged[e.date].month_end || e.month_end};
+    } else {
+      merged[e.date]={...e};
+    }
+  });
+  return Object.values(merged).sort((a,b)=>a.date.localeCompare(b.date));
+}
+
+function saveLog(log){pmSet('log',log.filter(e=>!SEED_LOG.find(s=>s.date===e.date)));}
+
+// ── MONTH-END RECORDS ──────────────────────────────────────────────────
+function getMonthEnds(){
+  const log = getLog();
+  const months = {};
+  log.forEach(e=>{
+    const m = e.date.slice(0,7);
+    if(e.month_end){ months[m]=e; return; }
+    if(!months[m]) months[m]=e;
+    else if(e.date > months[m].date) months[m]=e;
+  });
+  return Object.values(months).sort((a,b)=>b.date.localeCompare(a.date));
+}
+
+// ── PERIOD FILTER ──────────────────────────────────────────────────────
+let currentPeriod = 'mtd';
+function getFilterData(period){
+  const log = getLog();
+  if(!log.length) return null;
+  const latest = log[log.length-1];
+  const now = latest.date;
+  const month = now.slice(0,7);
+
+  if(period==='daily') return latest;
+  if(period==='mtd')   return log.filter(e=>e.date.startsWith(month)).slice(-1)[0]||latest;
+  if(period==='wtd'){
+    const d=new Date(now); const day=d.getDay();
+    const sun=new Date(d); sun.setDate(d.getDate()-day);
+    const sunStr=sun.toISOString().slice(0,10);
+    const wtd=log.filter(e=>e.date>=sunStr&&e.date<=now);
+    return wtd.length?wtd[wtd.length-1]:latest;
+  }
+  if(period==='prior'){
+    const [y,m]=month.split('-').map(Number);
+    const pm=m===1?`${y-1}-12`:`${y}-${String(m-1).padStart(2,'0')}`;
+    const prior=log.filter(e=>e.date.startsWith(pm));
+    return prior.length?prior[prior.length-1]:null;
+  }
+  if(period==='ytd'){
+    const year=now.slice(0,4);
+    const ytd=log.filter(e=>e.date.startsWith(year));
+    return ytd.length?ytd[ytd.length-1]:latest;
+  }
+  return latest;
+}
+
+// ── FORMAT HELPERS ─────────────────────────────────────────────────────
+function fmtM(n){if(!n&&n!==0)return'—';const m=n/1e6;return m>=1?'$'+m.toFixed(2)+'M':'$'+Math.round(n).toLocaleString();}
+function fmtN(n){return (n||0).toLocaleString();}
+function fmtDate(d){if(!d)return'';const [y,mo,day]=d.split('-');const names=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return `${names[+mo-1]} ${+day}, ${y}`;}
+function monthLabel(d){const [y,m]=d.slice(0,7).split('-');const names=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return `${names[+m-1]} ${y}`;}
+
+// ── SPA ROUTING ────────────────────────────────────────────────────────
+function showSection(name){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('section-'+name);
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  const sb=document.querySelector(`.sb-item[onclick*="'${name}'"]`);
+  if(sb) sb.classList.add('active');
+  if(name==='home') loadHomeWidget();
+  if(name==='sales') renderFieldDash();
+  window.scrollTo(0,0);
+}
+
+// ── HOME WIDGET ────────────────────────────────────────────────────────
+function loadHomeWidget(){
+  const d=getFilterData('mtd');
+  const stored=pmGet('lu');
+  document.getElementById('homeLastUpdated').textContent=stored?'Updated: '+stored:'Showing most recent confirmed data';
+  if(d){
+    document.getElementById('homeMtdUnits').textContent=fmtN(d.mtdFundedUnits);
+    document.getElementById('homeMtdVol').textContent=fmtM(d.mtdFundedVol);
+    document.getElementById('homePipeline').textContent=fmtM(d.pipelineVol);
+    document.getElementById('homeDaily').textContent=d.dailyFunded||'—';
+  }
+}
+
+// ── SALES TABS ─────────────────────────────────────────────────────────
+function showSalesTab(name, el){
+  ['resources','field','lo','leadership'].forEach(t=>{
+    const e=document.getElementById('st-'+t);
+    if(e) e.style.display='none';
+  });
+  document.getElementById('st-upload').style.display='none';
+  const tab=document.getElementById('st-'+name);
+  if(tab) tab.style.display='block';
+  document.querySelectorAll('#section-sales .ph-tab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  if(name==='field') renderFieldDash();
+  if(name==='lo') renderLOPerf();
+  if(name==='leadership') renderLeadership();
+}
+
+// ── PERIOD TOGGLE ──────────────────────────────────────────────────────
+function setPeriod(p,btn){
+  currentPeriod=p;
+  document.querySelectorAll('.pt-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFieldDash();
+}
+
+// ── FIELD DASHBOARD ────────────────────────────────────────────────────
+function renderFieldDash(){
+  const d=getFilterData(currentPeriod);
+  const lbl={'daily':'Today','wtd':'WTD','mtd':'MTD','prior':'Prior Month','ytd':'YTD'}[currentPeriod];
+  if(d){
+    document.getElementById('dmUnits').textContent=fmtN(d.mtdFundedUnits);
+    document.getElementById('dmUnitsSub').textContent=lbl+' · '+fmtDate(d.date);
+    document.getElementById('dmVol').textContent=fmtM(d.mtdFundedVol);
+    document.getElementById('dmVolSub').textContent=lbl+' funded volume';
+    document.getElementById('dmPipeline').textContent=fmtM(d.pipelineVol);
+    document.getElementById('dmPipelineSub').textContent='Locked vol. accumulative';
+    document.getElementById('dmDaily').textContent=fmtN(d.dailyFunded||0);
+  }
+  // Leaderboards from stored daily data
+  const daily=pmGet('daily');
+  if(daily){
+    renderLeaderboard('lb-fundings', daily.fundings||[]);
+    renderLeaderboard('lb-locked', daily.locked||[]);
+    renderLeaderboard('lb-apps', daily.apps||[]);
+    renderLeaderboard('lb-leads', daily.leads||[]);
+  }
+}
+
+function renderLeaderboard(elId, agents){
+  const el=document.getElementById(elId); if(!el) return;
+  if(!agents||!agents.length){el.innerHTML='<div class="lb-row" style="color:#8A7E78;font-size:13px;padding:14px 18px;">No data yet — upload CRM charts</div>';return;}
+  const max=agents[0].units||1;
+  el.innerHTML=agents.slice(0,8).map((a,i)=>`
+    <div class="lb-row">
+      <div class="lb-rank${i===0?' gold':''}">${i+1}</div>
+      <div class="lb-name">${a.name}</div>
+      <div class="lb-bar-wrap"><div class="lb-bar" style="width:${Math.round((a.units/max)*100)}%"></div></div>
+      <div class="lb-val">${a.units}</div>
+    </div>`).join('');
+}
+
+// ── LO PERFORMANCE ─────────────────────────────────────────────────────
+function renderLOPerf(){
+  const mes=getMonthEnds();
+  const btn=document.getElementById('loMonthBtns');
+  if(!btn) return;
+  btn.innerHTML=mes.slice(0,12).map((e,i)=>`
+    <button class="ls-month-btn${i===0?' active':''}" onclick="loadLOMonth('${e.date.slice(0,7)}',this)">${monthLabel(e.date)}</button>`).join('');
+  if(mes.length) loadLOMonth(mes[0].date.slice(0,7), btn.querySelector('.active'));
+}
+
+function loadLOMonth(ym, btn){
+  document.querySelectorAll('#st-lo .ls-month-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('loMonthLabel').textContent=monthLabel(ym+'-01');
+  const allLO=pmGet('lo')||{};
+  const rows=allLO[ym]||[];
+  const tbody=document.getElementById('loTableBody');
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#8A7E78;padding:20px;">No LO data for this month yet</td></tr>';return;}
+  const maxVol=Math.max(...rows.map(r=>r.vol||0))||1;
+  tbody.innerHTML=rows.sort((a,b)=>(b.units||0)-(a.units||0)).map((r,i)=>`
+    <tr>
+      <td style="color:#8A7E78;font-weight:700;">${i+1}</td>
+      <td style="font-weight:600;">${r.name||'—'}</td>
+      <td>${r.branch||'—'}</td>
+      <td style="font-weight:700;color:#00818D;">${r.units||0}</td>
+      <td>$${(r.vol||0).toLocaleString()}</td>
+      <td><div class="lo-vol-bar" style="width:${Math.round(((r.vol||0)/maxVol)*120)}px"></div></td>
+    </tr>`).join('');
+}
+
+// ── LEADERSHIP ─────────────────────────────────────────────────────────
+let lsUnlocked=false;
+function checkLsPin(){
+  const v=document.getElementById('lsPinInput').value;
+  if(v==='1988'){
+    lsUnlocked=true;
+    document.getElementById('ls-pin-gate').style.display='none';
+    document.getElementById('ls-content').style.display='block';
+    renderLeadershipContent();
+  } else {
+    document.getElementById('lsPinErr').style.display='block';
+    document.getElementById('lsPinInput').value='';
+  }
+}
+function renderLeadership(){if(lsUnlocked) renderLeadershipContent();}
+function renderLeadershipContent(){
+  const mes=getMonthEnds();
+  const grid=document.getElementById('lsMonthGrid');
+  if(!grid) return;
+  grid.innerHTML=mes.map((e,i)=>`
+    <button class="ls-month-btn${i===0?' active':''}" onclick="loadLsMonth('${e.date}',this)">${monthLabel(e.date)}</button>`).join('');
+  if(mes.length) loadLsMonth(mes[0].date, grid.querySelector('.active'));
+  buildYtdTable();
+}
+function loadLsMonth(date, btn){
+  document.querySelectorAll('#ls-content .ls-month-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const log=getLog(); const e=log.find(l=>l.date===date)||getMonthEnds().find(m=>m.date===date);
+  if(!e) return;
+  document.getElementById('ls-month-detail').style.display='block';
+  const log2=getLog(); const prev=log2.filter(l=>l.date<date&&l.month_end).sort((a,b)=>b.date.localeCompare(a.date))[0];
+  const uDiff=prev?e.mtdFundedUnits-prev.mtdFundedUnits:null;
+  document.getElementById('lsMetrics').innerHTML=`
+    <div class="ls-met"><div class="ls-met-lbl">Funded Units</div><div class="ls-met-val">${fmtN(e.mtdFundedUnits)}</div>${uDiff!==null?`<div class="ls-met-sub">${uDiff>=0?'↑':'↓'} ${Math.abs(uDiff)} vs prior month</div>`:''}</div>
+    <div class="ls-met"><div class="ls-met-lbl">Funded Volume</div><div class="ls-met-val">${fmtM(e.mtdFundedVol)}</div><div class="ls-met-sub">${fmtDate(e.date)}</div></div>
+    <div class="ls-met"><div class="ls-met-lbl">Pipeline Vol. (Locked)</div><div class="ls-met-val">${fmtM(e.pipelineVol)}</div><div class="ls-met-sub">Accumulative</div></div>
+    <div class="ls-met"><div class="ls-met-lbl">Recruiting</div>
+      <div class="ls-met-val" style="font-size:18px;">${e.recHires||0} hired</div>
+      <div class="ls-met-sub">${e.recLOI||0} LOIs out · ${e.recPlay||0} in play</div></div>`;
+  const rec=document.getElementById('lsRecruiting');
+  rec.innerHTML=`
+    <div class="ann-item"><div class="ann-dot t"></div><div class="ann-content"><h4>New Hires</h4><p>${e.recHires||0} this month</p></div></div>
+    <div class="ann-item"><div class="ann-dot y"></div><div class="ann-content"><h4>LOIs Out</h4><p>${e.recLOI||0} outstanding</p></div></div>
+    <div class="ann-item"><div class="ann-dot g"></div><div class="ann-content"><h4>In Play</h4><p>${e.recPlay||0} prospects</p></div></div>`;
+}
+function buildYtdTable(){
+  const mes=getMonthEnds(); const tbody=document.getElementById('ytdTableBody');
+  if(!tbody) return;
+  let prev=null;
+  tbody.innerHTML=mes.slice(0,12).reverse().map(e=>{
+    const diff=prev?e.mtdFundedUnits-prev.mtdFundedUnits:null;
+    prev=e;
+    return `<tr>
+      <td style="font-weight:600;">${monthLabel(e.date)}</td>
+      <td style="font-weight:700;color:#00818D;">${fmtN(e.mtdFundedUnits)}</td>
+      <td>${fmtM(e.mtdFundedVol)}</td>
+      <td>${fmtM(e.pipelineVol)}</td>
+      <td style="font-weight:600;color:${diff===null?'#8A7E78':diff>=0?'#1a7a38':'#c0392b'}">${diff===null?'—':(diff>=0?'↑':'↓')+Math.abs(diff)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── ADMIN MODAL ────────────────────────────────────────────────────────
+function openAdminModal(){document.getElementById('adminModal').classList.add('visible');document.getElementById('adminPinInput').value='';document.getElementById('adminPinErr').style.display='none';}
+function closeAdminModal(){document.getElementById('adminModal').classList.remove('visible');}
+function submitAdminPin(){
+  const p=document.getElementById('adminPinInput').value;
+  if(p==='1352'){
+    closeAdminModal();
+    // Show upload center
+    ['resources','field','lo','leadership'].forEach(t=>{const e=document.getElementById('st-'+t);if(e)e.style.display='none';});
+    document.getElementById('st-upload').style.display='block';
+    showSection('sales');
+    document.querySelectorAll('#section-sales .ph-tab').forEach(t=>t.classList.remove('active'));
+    // Set today's date
+    document.getElementById('uc-date').value=new Date().toISOString().slice(0,10);
+  } else {
+    document.getElementById('adminPinErr').style.display='block';
+    document.getElementById('adminPinInput').value='';
+  }
+}
+document.getElementById('adminModal').addEventListener('click',function(e){if(e.target===this)closeAdminModal();});
+
+// ── UPLOAD CENTER ──────────────────────────────────────────────────────
+const extractedData={fundings:[],locked:[],apps:[],leads:[]};
+
+async function handleChartUpload(input, type){
+  if(!input.files||!input.files[0]) return;
+  const slot=document.getElementById('slot-'+type);
+  const ext=document.getElementById('ext-'+type);
+  slot.classList.add('loaded');
+  ext.style.display='block';
+  ext.textContent='⏳ Extracting data with AI…';
+  try{
+    const b64=await toB64(input.files[0]);
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:1000,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:input.files[0].type||'image/png',data:b64}},
+          {type:'text',text:`Extract the mortgage agent/LO names and their ${type} counts from this CRM chart screenshot. Return ONLY valid JSON: {"agents":[{"name":"Full Name","units":N,"volume":N}]} — no markdown, no explanation. If volume is not shown, use 0.`}
+        ]}]
+      })
+    });
+    const data=await resp.json();
+    const text=data.content.filter(c=>c.type==='text').map(c=>c.text).join('');
+    const clean=text.replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(clean);
+    extractedData[type]=parsed.agents||[];
+    ext.innerHTML='✅ Found '+extractedData[type].length+' agents:<br>'+extractedData[type].slice(0,5).map(a=>`<strong>${a.name}</strong>: ${a.units}`).join(' · ');
+  }catch(e){ext.textContent='⚠️ Could not extract — try a clearer screenshot. Error: '+e.message;}
+}
+
+async function handleXlsxUpload(input){
+  if(!input.files||!input.files[0]) return;
+  const ext=document.getElementById('ext-xlsx');
+  ext.style.display='block'; ext.textContent='⏳ Parsing file with AI…';
+  document.getElementById('slot-xlsx').classList.add('loaded');
+  try{
+    const b64=await toB64(input.files[0]);
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:4000,
+        messages:[{role:'user',content:[
+          {type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},
+          {type:'text',text:'Parse this production spreadsheet. Extract ALL rows with dates. Column mapping: Date→date (YYYY-MM-DD), Units Funded→mtdFundedUnits, Volume Funded→mtdFundedVol, Locked Volume Accumulative (col D)→pipelineVol. Return ONLY valid JSON array: [{"date":"YYYY-MM-DD","mtdFundedUnits":N,"mtdFundedVol":N,"pipelineVol":N}]. No markdown.'}
+        ]}]
+      })
+    });
+    const data=await resp.json();
+    const text=data.content.filter(c=>c.type==='text').map(c=>c.text).join('');
+    const clean=text.replace(/```json|```/g,'').trim();
+    const rows=JSON.parse(clean);
+    const log=getLog();
+    rows.forEach(r=>{const i=log.findIndex(l=>l.date===r.date);if(i>=0)Object.assign(log[i],r);else log.push({...r,month_end:false,dailyFunded:0});});
+    saveLog(log);
+    ext.textContent='✅ Parsed '+rows.length+' rows from spreadsheet.';
+  }catch(e){
+    ext.innerHTML='⚠️ Parse failed. Try saving as CSV first and re-uploading.<br><small>'+e.message+'</small>';
+  }
+}
+
+function toB64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});}
+
+function addLoRow(){
+  const tbody=document.getElementById('uc-lo-body');
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td><input type="text" placeholder="Full name"></td><td><input type="text" placeholder="Branch"></td><td><input type="number" placeholder="0"></td><td><input type="number" placeholder="0"></td><td><button onclick="removeLoRow(this)" style="background:none;border:none;cursor:pointer;color:#c0392b;font-size:16px;">✕</button></td>';
+  tbody.appendChild(tr);
+}
+function removeLoRow(btn){const tr=btn.closest('tr');if(tr.parentNode.rows.length>1)tr.remove();}
+
+function saveAndPublish(){
+  const date=document.getElementById('uc-date').value;
+  if(!date){alert('Please enter a report date.');return;}
+  const entry={
+    date, month_end: document.getElementById('uc-monthend').checked,
+    mtdFundedUnits: +document.getElementById('uc-units').value||0,
+    mtdFundedVol: +document.getElementById('uc-vol').value||0,
+    pipelineVol: +document.getElementById('uc-pipeline').value||0,
+    pipelineUnits: +document.getElementById('uc-locked-units').value||0,
+    dailyFunded: +document.getElementById('uc-daily').value||0,
+    recHires: +document.getElementById('uc-rhires').value||0,
+    recLOI: +document.getElementById('uc-rloi').value||0,
+    recPlay: +document.getElementById('uc-rplay').value||0,
+  };
+  const log=getLog();
+  const idx=log.findIndex(l=>l.date===date);
+  if(idx>=0) log[idx]={...log[idx],...entry};
+  else log.push(entry);
+  saveLog(log);
+  // Save daily leaderboard data
+  if(Object.values(extractedData).some(a=>a.length)){
+    pmSet('daily',{date,fundings:extractedData.fundings,locked:extractedData.locked,apps:extractedData.apps,leads:extractedData.leads});
+  }
+  // Save LO data
+  const ym=document.getElementById('uc-lo-month').value;
+  if(ym){
+    const rows=Array.from(document.getElementById('uc-lo-body').rows).map(tr=>{
+      const cells=tr.querySelectorAll('input');
+      return{name:cells[0].value,branch:cells[1].value,units:+cells[2].value||0,vol:+cells[3].value||0};
+    }).filter(r=>r.name);
+    if(rows.length){const allLO=pmGet('lo')||{};allLO[ym]=rows;pmSet('lo',allLO);}
+  }
+  const now=new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+  pmSet('lu',now);
+  document.getElementById('uc-status').textContent='✅ Published successfully — '+now;
+  loadHomeWidget();
+}
+
+// ── ONBOARDING TABS ────────────────────────────────────────────────────
+function showObTab(name,el){
+  ['checklist','plan','systems','licensing','training','faq'].forEach(t=>{
+    const e=document.getElementById('ob-'+t); if(e) e.style.display='none';
+  });
+  const tab=document.getElementById('ob-'+name); if(tab) tab.style.display='block';
+  document.querySelectorAll('#section-onboarding .ph-tab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+}
+function toggleFaq(el){el.closest('.faq-item').classList.toggle('open');}
+
+// ── INIT ───────────────────────────────────────────────────────────────
+loadHomeWidget();
+// Activate correct sidebar item on load
+document.querySelector('.sb-item[onclick*="\'home\'"]').classList.add('active');
+
+
+
+// ── HAMBURGER / SIDEBAR TOGGLE ─────────────────────────────────────────
+function toggleSidebar() {
+  const sb  = document.querySelector('.sidebar');
+  const bd  = document.getElementById('mobBackdrop');
+  const hb  = document.getElementById('mobHamburger');
+  const isOpen = sb.classList.contains('mob-open');
+  if(isOpen) { closeSidebar(); }
+  else {
+    sb.classList.add('mob-open');
+    bd.classList.add('on');
+    hb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+function closeSidebar() {
+  const sb = document.querySelector('.sidebar');
+  const bd = document.getElementById('mobBackdrop');
+  const hb = document.getElementById('mobHamburger');
+  if(!sb) return;
+  sb.classList.remove('mob-open');
+  bd.classList.remove('on');
+  if(hb) hb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close sidebar when a nav item is tapped on mobile
+document.querySelectorAll('.sb-item').forEach(item => {
+  item.addEventListener('click', () => {
+    if(window.innerWidth <= 768) closeSidebar();
+  });
+});
+
+// Patch showSection to close sidebar on mobile
+const _origShowSection = showSection;
+window.showSection = function(name) {
+  _origShowSection(name);
+  if(window.innerWidth <= 768) closeSidebar();
+};
+
+// Fix inline-styled home bottom grid for responsive
+(function patchHomeGrid(){
+  const homeSec = document.getElementById('section-home');
+  if(!homeSec) return;
+  const grids = homeSec.querySelectorAll('[style*="320px"]');
+  grids.forEach(g => g.classList.add('home-bottom-grid'));
+})();
+
+// Swipe-right-to-open, swipe-left-to-close sidebar
+(function(){
+  let startX = 0, startY = 0;
+  document.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = Math.abs(e.changedTouches[0].clientY - startY);
+    if(dy > 60) return; // Vertical scroll, ignore
+    const sb = document.querySelector('.sidebar');
+    if(dx > 60 && startX < 30 && window.innerWidth <= 768) {
+      // Swipe right from left edge → open
+      sb.classList.add('mob-open');
+      document.getElementById('mobBackdrop').classList.add('on');
+      document.getElementById('mobHamburger').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    } else if(dx < -60 && sb && sb.classList.contains('mob-open')) {
+      // Swipe left → close
+      closeSidebar();
+    }
+  }, {passive:true});
+})();
+
+// ── ADD home-bottom-grid CLASS TO HOME BOTTOM ──────────────────────────
+// Fix the inline-styled 2-col bottom of home page for mobile
+document.addEventListener('DOMContentLoaded', function(){
+  const homeSec = document.getElementById('section-home');
+  if(homeSec) {
+    const lastGrid = homeSec.querySelector('[style*="grid-template-columns:1fr 320px"]');
+    if(lastGrid) lastGrid.classList.add('home-bottom-grid');
+  }
+});
+// Run immediately for non-DOMContentLoaded
+(function(){
+  const homeSec = document.getElementById('section-home');
+  if(homeSec) {
+    const lastGrid = homeSec.querySelector('[style*="grid-template-columns:1fr 320px"]');
+    if(lastGrid) lastGrid.classList.add('home-bottom-grid');
+  }
+})();
+
+</script>
+
+
+
+<!-- ═══════════════ MORE DRAWER ═══════════════════ -->
+<div class="mob-overlay" id="mobOverlay" onclick="closeMoreDrawer()"></div>
+<div class="mob-drawer" id="mobDrawer">
+  <div class="mob-drawer-handle"></div>
+  <div class="mob-search-bar" id="mobSearchBar" style="display:flex;">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#8A7E78" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
+    <input type="text" placeholder="Search Partner Hub…">
+  </div>
+  <div class="mob-drawer-title">All Sections</div>
+  <div class="mob-drawer-grid">
+    <a class="mob-drawer-item" href="#" onclick="goDrawer('operations');return false;">
+      <div class="mob-drawer-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+      <div class="mob-drawer-label">Operations</div>
+    </a>
+    <a class="mob-drawer-item" href="#" onclick="goDrawer('onboarding');return false;">
+      <div class="mob-drawer-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>
+      <div class="mob-drawer-label">Onboarding</div>
+    </a>
+    <a class="mob-drawer-item" href="#" onclick="goDrawer('sales');return false;">
+      <div class="mob-drawer-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
+      <div class="mob-drawer-label">Sales</div>
+    </a>
+    <a class="mob-drawer-item" href="#" onclick="goDrawer('marketing');return false;">
+      <div class="mob-drawer-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg></div>
+      <div class="mob-drawer-label">Marketing</div>
+    </a>
+    <a class="mob-drawer-item" href="#" onclick="goDrawer('hr');return false;">
+      <div class="mob-drawer-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+      <div class="mob-drawer-label">HR &amp; Benefits</div>
+    </a>
+    <a class="mob-drawer-item" href="#" onclick="goDrawer('celebrations');return false;">
+      <div class="mob-drawer-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></div>
+      <div class="mob-drawer-label">Celebrations</div>
+    </a>
+    <a class="mob-drawer-item" href="#" onclick="goDrawer('lenders');return false;">
+      <div class="mob-drawer-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div>
+      <div class="mob-drawer-label">Lenders</div>
+    </a>
+    <a class="mob-drawer-item" href="#" onclick="goDrawer('merch');return false;">
+      <div class="mob-drawer-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg></div>
+      <div class="mob-drawer-label">Merch Store</div>
+    </a>
+    <a class="mob-drawer-item" href="#" onclick="openAdminModal();closeMoreDrawer();return false;">
+      <div class="mob-drawer-icon" style="background:#fff3dc;color:#9a6000;">⚙</div>
+      <div class="mob-drawer-label">Admin Upload</div>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>
